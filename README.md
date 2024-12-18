@@ -10,9 +10,24 @@ with SAP Commerce Cloud tremendously.
 - Handling of multiple SAP Commerce projects with ease
 - Sharing global configuration profiles between projects
 - Sharing global dependencies & artefacts between projects
-- Automatical local installation process of SAP Commerce
+- Automatical local installation process of SAP Commerce Packages
 - Reconfiguration of local environment with predefined profiles
-- Preconfigured SSL and SSO profiles
+- SSL profile with public wildcard certificate for front & backend
+- SSO profile with preconfigured integration on Auth0 as IDP
+- Development profiles for backoffice and smart edit development
+
+## Daily workflow activities
+
+| Task | Console command(s) | Description |
+|------|--------------------|-------------|
+| Load Project | `yLoadProject <PATH> (<NAME>)` | Load and configures the SAP Commerce project at <PATH>. The <NAME> is optional and just for your convenience (used in title of terminal). <br> **Note: This command is a prerequisite for all the commands below!** |
+| Setup Project | `ysetup` | Performs the fundamental setup of the local development environment, including the extraction of the SAP Commerce Suite and integration packs which are configured within the `manifest.json`. <br> **Note: This command is typically used once in a while when you need to update your platform. It automates the whole setup process.** |
+| Project navigation | `toworkspace` <br> `toplatform` <br> `toconfig` <br> `tostorefront` | Navigates to the specific folder within your local project. These commands use absolute paths, so you can call them from anywhere in the system. |
+| Building the project | `yserver` <br> `ybuild` <br> `yrebuild`<br> `yinit` <br> `yreinit` <br> `yreformat` | Performs the given build operation while the mapping is as follows: <br> <ul><li>`yserver` => `ant customize server`</li><li>`ybuild` => `ant build server`</li><li>`yrebuild` => `ant clean customize all`</li><li>`yrush` => `ant rushrebuilddev`</li><li>`yinit` => `ant initialize`</li><li>`yreinit` => `ant clean customize all initialize`</li></ul> <br> `yreformat` performs automated code conventions, if available. |
+| Server start | `ystart` <br> `ydebug` <br> `ystorefront` <br> `ystorefrontssl` | Starting the local server without or with DEBUG mode enabled. The frontend can be started without or with SSL support. |
+| Testing | `yunittest` <br> `yinttest` <br> `ytestresult` <br> `ymails` | Perform testing scenarios and open the test results in your system's browser or the folder with stored local email in your system's file browser. |
+
+# Installation
 
 ## Preconditions
 
@@ -20,7 +35,9 @@ In order to make CX DEV environment work there are a couple of preconditions
 that need to be fulfilled:
 
 - SDKman: for handling of Java versions
-- nodenv: for handling of node versions
+- nodenv: for handling of Node versions
+- The project layout must follow the CCv2 project template
+- For some features smaller customizations within the project layout are necessary 
 
 ### SDKMAN
 
@@ -101,6 +118,27 @@ npm --version
 npx --version
 ```
 
+### Project layout
+
+We typically setup our repositories by initializing the project from the
+[CCv2 template provided by SAP](https://github.com/sap-commerce-tools/ccv2-project-template).
+
+It is not necessary to run the bootstrap scripts from that template, but the
+overall structure should follow the guidelines:
+
+- core-customize: Folder for SAP Commerce Backend
+- js-storefront: Folder for Composable Storefront
+
+We have done the following customizations to tweak the environment for multi-
+project scenarios:
+
+- Introduced a global build.gradle.kts that wraps backend / frontend into one build and introduces code formatting tasks, incl. move of gradle wrapper to the root level
+- Moved dependencies folder to the top level and use it as a link to a shared global directory
+
+We are looking forward to merge back the changes to the global repository.
+Until then, we recommend to use the adjusted template from our repository:
+[Adjusted CCv2 template](https://github.com/sapcxtools/ccv2-project-template).
+
 ## Installation
 
 The installation of CXDEV is also very simple by running the following prompt:
@@ -136,3 +174,15 @@ alias yproject3='yLoadProject /path/to/customerC/project3 "Customer Projekt3"
 
 Registering these aliases will allow you to simply type `yproject1` instead of
 the long command every time.
+
+# Configuration
+
+The preconfigured configuration profiles and the explaination of the mechanism is part of the [configuration README.me](./configuration/README.md). Please go there for further details about configuration options.
+
+In addition, is often useful to create some more local alias as quicklinks for
+your projects. I use the following helpful aliases:
+
+```
+alias ysapcxtools='yLoadProject "$HOME/Projects/CXTools/workspace" "SAP CX Tools Extensions"'
+alias ycustomer_ABC='yLoadProject "$HOME/Projects/CustomerABC/projectXYZ" "SAP Commerce Project XYZ for Customer ABC"'
+```
