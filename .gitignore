@@ -1,0 +1,19 @@
+# Linux General
+*~
+
+# KDE directory preferences
+.directory
+
+# MacOS General
+.DS_Store
+
+# MacOS Thumbnails
+._*
+
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+
+# Windows Folder config file
+[Dd]esktop.ini
+
