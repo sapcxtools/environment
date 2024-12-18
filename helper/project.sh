@@ -113,7 +113,8 @@ function yLoadProject {
 		echo -e "\e[39m"
 
 		echo -e "\e[32m [INFO] Environment configuration found at:\e[39m $PLATFORM_HOME/env.properties"
-		CONFDIR=`cat env.properties | grep HYBRIS_CONFIG_DIR | sed "s#HYBRIS_CONFIG_DIR=\\\${platformhome}#.#"`
+		CONFDIR=`cat env.properties | grep HYBRIS_CONFIG_DIR | sed "s#HYBRIS_CONFIG_DIR=\\\${platformhome}#.#" | tr -d '\r\n'`
+		cd "$PLATFORM_HOME"
 		if [ -d "$CONFDIR/local-config" ]; then
 			cd "$CONFDIR/local-config"
 			HYBRIS_OPT_CONFIG_DIR=`pwd`
@@ -137,7 +138,7 @@ function yLoadProject {
 			if [ -d "$ENABLEDPROFILESHOME" ]; then
 				cd "$ENABLEDPROFILESHOME"
 				for i in $(ls -A); do 
-    				ln -s "$ENABLEDPROFILESHOME/$i" $HYBRIS_OPT_CONFIG_DIR
+    				cp "$ENABLEDPROFILESHOME/$i" $HYBRIS_OPT_CONFIG_DIR
 				done
 			fi
 
