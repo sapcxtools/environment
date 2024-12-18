@@ -5,6 +5,8 @@ enhancements of the standard CX products of SAP. The environment is a set
 of configurations, alias and scripts that speeds up your local development
 with SAP Commerce Cloud tremendously.
 
+[Go directly to the installation](#installation)
+
 ## Core features
 
 - Handling of multiple SAP Commerce projects with ease
@@ -27,7 +29,7 @@ with SAP Commerce Cloud tremendously.
 | Server start | `ystart` <br> `ydebug` <br> `ystorefront` <br> `ystorefrontssl` | Starting the local server without or with DEBUG mode enabled. The frontend can be started without or with SSL support. |
 | Testing | `yunittest` <br> `yinttest` <br> `ytestresult` <br> `ymails` | Perform testing scenarios and open the test results in your system's browser or the folder with stored local email in your system's file browser. |
 
-# Installation
+# How to use
 
 ## Preconditions
 
@@ -88,7 +90,7 @@ brew upgrade
 
 That's it!
 
-#### WSL unter Windows
+#### WSL2 under Windows
 
 For the installation of nodenv within a WSL container a couple of manual steps
 are required. The following shows the scripts required as a simply copy-paste
@@ -139,7 +141,7 @@ We are looking forward to merge back the changes to the global repository.
 Until then, we recommend to use the adjusted template from our repository:
 [Adjusted CCv2 template](https://github.com/sapcxtools/ccv2-project-template).
 
-## Installation
+## Installation<a name="installation"></a>
 
 The installation of CXDEV is also very simple by running the following prompt:
 
@@ -163,8 +165,8 @@ required artefacts:
 
 Restart your terminal once again and you are ready to start working with CXDEV!
 
-Simply open your project by running `yLoadProject <PATH>`. You may want to
-define an alias for this or even multiple aliases per project:
+Simply open your project by running `yLoadProject <PATH> (<NAME>)`. You may
+want to define aliases for one or even multiple projects like this:
 
 ```
 alias yproject1='yLoadProject /path/to/customerA/project1 "Customer Projekt1"
@@ -173,16 +175,10 @@ alias yproject3='yLoadProject /path/to/customerC/project3 "Customer Projekt3"
 ```
 
 Registering these aliases will allow you to simply type `yproject1` instead of
-the long command every time.
+the long command every time. The second parameter `<NAME>` is optional, but
+it will be printed and used as title for the terminal window. Therefore, it
+helps to have a better overview over multiple projects in separate windows.
 
 # Configuration
 
 The preconfigured configuration profiles and the explaination of the mechanism is part of the [configuration README.me](./configuration/README.md). Please go there for further details about configuration options.
-
-In addition, is often useful to create some more local alias as quicklinks for
-your projects. I use the following helpful aliases:
-
-```
-alias ysapcxtools='yLoadProject "$HOME/Projects/CXTools/workspace" "SAP CX Tools Extensions"'
-alias ycustomer_ABC='yLoadProject "$HOME/Projects/CustomerABC/projectXYZ" "SAP Commerce Project XYZ for Customer ABC"'
-```
