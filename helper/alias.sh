@@ -5,7 +5,7 @@ alias toconfig='cd "$HYBRIS_OPT_CONFIG_DIR"'
 alias tostorefront='cd "$STOREFRONT_HOME"'
 
 alias yreload='yLoadProject "$WORKSPACE_HOME" "$PROJECT_NAME"'
-alias yreconfig='toworkspace && ./gradlew setupLocalDevelopment'
+alias ysetup='toworkspace && ./gradlew setupLocalDevelopment'
 alias yreformat='toworkspace && ./gradlew spotlessApply'
 
 alias yserver='toplatform && ant customize server && toworkspace'
