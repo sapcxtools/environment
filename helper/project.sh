@@ -1,7 +1,7 @@
 function yLoadProject {
 	if [[ "" == "$1" ]]; then
 		echo -e "\e[31m [WARN] Wrong parameters! Please use syntax: yLoadProject <PATH> (<NAME>)! \e[39m"
-		return 1;
+		return 1
 	fi
 
 	# Print project information
@@ -19,7 +19,7 @@ function yLoadProject {
 		cd "$1"
 	else
 		echo -e "\e[31m [WARN] No workspace found at $1! \e[39m"
-		return 1;
+		return 1
 	fi
 	WORKSPACE_HOME=`pwd`
 	echo -e "\e[32m [INFO] Switched to workspace location:\e[39m $WORKSPACE_HOME"
@@ -73,36 +73,38 @@ function yLoadProject {
 			fi
 		fi
 	fi
+
+	# Load Java environment
+	BACKEND_HOME=$WORKSPACE_HOME/core-customize
+	if [ -f "$BACKEND_HOME/.java-version" ]; then
+		JAVA_VERSION=`cat "$BACKEND_HOME/.java-version"`
+		if [ -d "`sdk home java $JAVA_VERSION`" ]; then
+			sdk use java $JAVA_VERSION
+		else
+			echo -e "\e[31m [WARN] Java virtual machine not found: $JAVA_VERSION! Try to install using SDKman. \e[39m"
+			sdk install java $JAVA_VERSION
+
+			if [ -d "`sdk home java $JAVA_VERSION`" ]; then
+				sdk use java $JAVA_VERSION
+			else
+				echo -e "\e[31m [WARN] Java virtual machine cannot be installed: $JAVA_VERSION! \e[39m"
+				cd $WORKSPACE_HOME
+				return 2
+			fi
+		fi
+	else
+		echo -e "\e[31m [WARN] No Java version configured within project, missing file:\e[33m\e[1m $WORKSPACE_HOME/core-customizer/.java-version \e[0m\e[39m"
+		echo -e "\e[32m [WARN] Fallback to Java version configured in system environment! \e[39m"
+	fi
+	echo -e "\e[32m [INFO] JAVA_HOME set to:\e[39m $JAVA_HOME"
+	echo -e "\e[34m"
+	java -version
+	echo -e "\e[39m"
 	
 	# Load SAP Commerce platform environment
 	if [ -d "$PLATFORM_HOME" ]; then
 		echo -e "\e[32m [INFO] SAP Commerce installation found at:\e[39m $PLATFORM_HOME"
 		cd "$PLATFORM_HOME"
-
-		# Load Java environment
-		if [ -f "$WORKSPACE_HOME/core-customize/.java-version" ]; then
-			JAVA_VERSION=`cat "$WORKSPACE_HOME/core-customize/.java-version"`
-			if [ -d "`sdk home java $JAVA_VERSION`" ]; then
-				sdk use java $JAVA_VERSION
-			else
-				echo -e "\e[31m [WARN] Java virtual machine not found: $JAVA_VERSION! Try to install using SDKman. \e[39m"
-				sdk install java $JAVA_VERSION
-
-				if [ -d "`sdk home java $JAVA_VERSION`" ]; then
-					sdk use java $JAVA_VERSION
-				else
-					echo -e "\e[31m [WARN] Java virtual machine cannot be installed: $JAVA_VERSION! \e[39m"
-					return 2;
-				fi
-			fi
-		else
-			echo -e "\e[31m [WARN] No Java version configured within project, missing file:\e[33m\e[1m $WORKSPACE_HOME/core-customizer/.java-version \e[0m\e[39m"
-			echo -e "\e[32m [WARN] Fallback to Java version configured in system environment! \e[39m"
-		fi
-		echo -e "\e[32m [INFO] JAVA_HOME set to:\e[39m $JAVA_HOME"
-		echo -e "\e[34m"
-		java -version
-		echo -e "\e[39m"
 
 		# Load Ant environment
 		echo -e "\e[32m [INFO] Loading ant environment configuration...\e[39m"
@@ -200,6 +202,25 @@ function yLoadProject {
 		cd `find . -type d -not -iname ".*" -not -iname "bootstrap" -not -iname "build" -maxdepth 1`
 		STOREFRONT_HOME=`pwd`
 		echo -e "\e[32m [INFO] Composable storefront found at:\e[39m $STOREFRONT_HOME"
+
+		# Load nodenv environment
+		if [ -f "$STOREFRONT_HOME/.node-version" ]; then
+			NODE_VERSION=`cat "$STOREFRONT_HOME/.node-version"`
+			if [ -z $(nodenv version-name) ]; then
+				echo -e "\e[31m [WARN] Node environment not found: $NODE_VERSION! Try to install using nodenv. \e[39m"
+				nodenv install $NODE_VERSION
+
+				if [ -z $(nodenv version-name) ]; then
+					echo -e "\e[31m [WARN] Node environment cannot be installed: $NODE_VERSION! \e[39m"
+					cd $WORKSPACE_HOME
+					return 2
+				fi
+			fi
+		else
+			echo -e "\e[31m [WARN] No node version configured within project, missing file:\e[33m\e[1m $STOREFRONT_HOME/.java-version \e[0m\e[39m"
+			echo -e "\e[32m [WARN] Fallback to Java version configured in system environment! \e[39m"
+		fi
+		echo -e "\e[32m [INFO] Node environment: \e[39m"
 		echo -e "\e[34m"
 		nodenv version
 		echo -e "\e[39m"
