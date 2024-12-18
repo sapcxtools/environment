@@ -158,10 +158,11 @@ downloaded the installation artefacts from SAP that are references within your
 `manifest.json` file.
 
 For more information please refer to the README.md files within the two
-required artefacts:
+required and one optional artefacts:
 
 - [SAP Commerce Suite](./dependencies/commercesuite/README.md)
 - [SAP Commerce Integration Pack](./dependencies/integrationpack/README.md)
+- [SAP JCO Connector](./dependencies/sapjco/README.md)
 
 Restart your terminal once again and you are ready to start working with CXDEV!
 
