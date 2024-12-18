@@ -75,9 +75,10 @@ function yLoadProject {
 	fi
 
 	# Load Java environment
-	BACKEND_HOME=$WORKSPACE_HOME/core-customize
-	if [ -f "$BACKEND_HOME/.java-version" ]; then
-		JAVA_VERSION=`cat "$BACKEND_HOME/.java-version"`
+	JAVA_VERSION_FILE=`find "$WORKSPACE_HOME" -iname '.java-version' -maxdepth 3 | head -1`
+	if [ -f "$JAVA_VERSION_FILE" ]; then
+		JAVA_VERSION=`cat "$JAVA_VERSION_FILE"`
+		echo -e "\e[32m [INFO] Java version $JAVA_VERSION defined in $JAVA_VERSION_FILE!\e[39m "
 		if [ -d "`sdk home java $JAVA_VERSION`" ]; then
 			sdk use java $JAVA_VERSION
 		else
@@ -88,12 +89,11 @@ function yLoadProject {
 				sdk use java $JAVA_VERSION
 			else
 				echo -e "\e[31m [WARN] Java virtual machine cannot be installed: $JAVA_VERSION! \e[39m"
-				cd $WORKSPACE_HOME
 				return 2
 			fi
 		fi
 	else
-		echo -e "\e[31m [WARN] No Java version configured within project, missing file:\e[33m\e[1m $WORKSPACE_HOME/core-customizer/.java-version \e[0m\e[39m"
+		echo -e "\e[31m [WARN] No Java version configured within project, missing file:\e[33m\e[1m $WORKSPACE_HOME/.java-version \e[0m\e[39m"
 		echo -e "\e[32m [WARN] Fallback to Java version configured in system environment! \e[39m"
 	fi
 	echo -e "\e[32m [INFO] JAVA_HOME set to:\e[39m $JAVA_HOME"
@@ -203,23 +203,25 @@ function yLoadProject {
 		cd `find . -type d -not -iname ".*" -not -iname "bootstrap" -not -iname "build" -maxdepth 1`
 		STOREFRONT_HOME=`pwd`
 		echo -e "\e[32m [INFO] Composable storefront found at:\e[39m $STOREFRONT_HOME"
+		cd "$WORKSPACE_HOME"
 
 		# Load nodenv environment
-		if [ -f "$STOREFRONT_HOME/.node-version" ]; then
-			NODE_VERSION=`cat "$STOREFRONT_HOME/.node-version"`
+		NODE_VERSION_FILE=`find "$WORKSPACE_HOME" -iname '.node-version' -maxdepth 3 | head -1`
+		if [ -f "$NODE_VERSION_FILE" ]; then
+			NODE_VERSION=`cat "$NODE_VERSION_FILE"`
+			echo -e "\e[32m [INFO] Node version $NODE_VERSION defined in $NODE_VERSION_FILE!\e[39m "
 			if [ -z $(nodenv version-name) ]; then
 				echo -e "\e[31m [WARN] Node environment not found: $NODE_VERSION! Try to install using nodenv. \e[39m"
 				nodenv install $NODE_VERSION
 
 				if [ -z $(nodenv version-name) ]; then
 					echo -e "\e[31m [WARN] Node environment cannot be installed: $NODE_VERSION! \e[39m"
-					cd $WORKSPACE_HOME
 					return 2
 				fi
 			fi
 		else
-			echo -e "\e[31m [WARN] No node version configured within project, missing file:\e[33m\e[1m $STOREFRONT_HOME/.java-version \e[0m\e[39m"
-			echo -e "\e[32m [WARN] Fallback to Java version configured in system environment! \e[39m"
+			echo -e "\e[31m [WARN] No node version configured within project, missing file:\e[33m\e[1m $WORKSPACE_HOME/.node-version \e[0m\e[39m"
+			echo -e "\e[32m [WARN] Fallback to Node version configured in system environment! \e[39m"
 		fi
 		echo -e "\e[32m [INFO] Node environment: \e[39m"
 		echo -e "\e[34m"
