@@ -103,8 +103,15 @@ function yLoadProject {
 	
 	# Load SAP Commerce platform environment
 	if [ -d "$PLATFORM_HOME" ]; then
-		echo -e "\e[32m [INFO] SAP Commerce installation found at:\e[39m $PLATFORM_HOME"
 		cd "$PLATFORM_HOME"
+		echo -e "\e[32m [INFO] SAP Commerce installation found at:\e[39m $PLATFORM_HOME"
+		if command -v jq > /dev/null; then
+			echo -e "\e[32m [INFO] SAP Commerce Suite (in manifest):\e[39m $(jq '.commerceSuiteVersion' -r $WORKSPACE_HOME/core-customize/manifest.json)"
+			echo -e "\e[32m [INFO] Integration Packs (in manifest):\e[39m"
+			echo -e "\e[34m"
+			jq '.extensionPacks[]?' -c -r $WORKSPACE_HOME/core-customize/manifest.json
+			echo -e "\e[39m"
+		fi
 
 		# Load Ant environment
 		echo -e "\e[32m [INFO] Loading ant environment configuration...\e[39m"
