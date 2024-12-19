@@ -4,4 +4,4 @@ export CXDEVHOME=$(dirname "$(realpath $0)")
 source $CXDEVHOME/helper/alias.sh
 source $CXDEVHOME/helper/artefacts.sh
 source $CXDEVHOME/helper/config.sh
-source $CXDEVHOME/helper/project.sh
+source $CXDEVHOME/helper/workspace.sh

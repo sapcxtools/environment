@@ -22,7 +22,7 @@ with SAP Commerce Cloud tremendously.
 
 | Task | Console command(s) | Description |
 |------|--------------------|-------------|
-| Load Project | `yLoadProject <PATH> (<NAME>)` | Load and configures the SAP Commerce project at <PATH>. The <NAME> is optional and just for your convenience (used in title of terminal). <br> **Note: This command is a prerequisite for all the commands below!** |
+| Load Project | `yLoadWorkspace path [NAME]` | Load and configures the SAP Commerce project at `path`. The `name` is optional and just for your convenience (used in title of terminal). <br> **Note: This command is a prerequisite for all the commands below!** |
 | Setup Project | `ysetup` | Performs the fundamental setup of the local development environment, including the extraction of the SAP Commerce Suite and integration packs which are configured within the `manifest.json`. <br> **Note: This command is typically used once in a while when you need to update your platform. It automates the whole setup process.** |
 | Project navigation | `toworkspace` <br> `toplatform` <br> `toconfig` <br> `tostorefront` | Navigates to the specific folder within your local project. These commands use absolute paths, so you can call them from anywhere in the system. |
 | Building the project | `yserver` <br> `ybuild` <br> `yrebuild`<br> `yinit` <br> `yreinit` <br> `yreformat` | Performs the given build operation while the mapping is as follows: <br> <ul><li>`yserver` => `ant customize server`</li><li>`ybuild` => `ant build server`</li><li>`yrebuild` => `ant clean customize all`</li><li>`yrush` => `ant rushrebuilddev`</li><li>`yinit` => `ant initialize`</li><li>`yreinit` => `ant clean customize all initialize`</li></ul> <br> `yreformat` performs automated code conventions, if available. |
@@ -134,8 +134,11 @@ overall structure should follow the guidelines:
 We have done the following customizations to tweak the environment for multi-
 project scenarios:
 
-- Introduced a global build.gradle.kts that wraps backend / frontend into one build and introduces code formatting tasks, incl. move of gradle wrapper to the root level
-- Moved dependencies folder to the top level and use it as a link to a shared global directory
+- Introduced a global build.gradle.kts that wraps backend / frontend into one
+  build and introduces code formatting tasks, incl. move of gradle wrapper to
+  the root level
+- Moved dependencies folder to the top level and use it as a link to a shared
+  global directory
 
 We are looking forward to merge back the changes to the global repository.
 Until then, we recommend to use the adjusted template from our repository:
@@ -166,20 +169,22 @@ required and one optional artefacts:
 
 Restart your terminal once again and you are ready to start working with CXDEV!
 
-Simply open your project by running `yLoadProject <PATH> (<NAME>)`. You may
+Simply open your project by running `yLoadWorkspace path [name]`. You may
 want to define aliases for one or even multiple projects like this:
 
 ```
-alias yproject1='yLoadProject /path/to/customerA/project1 "Customer Projekt1"
-alias yproject2='yLoadProject /path/to/customerB/project2 "Customer Projekt2"
-alias yproject3='yLoadProject /path/to/customerC/project3 "Customer Projekt3"
+alias yproject1='yLoadWorkspace /path/to/customerA/project1 "Customer Projekt1"
+alias yproject2='yLoadWorkspace /path/to/customerB/project2 "Customer Projekt2"
+alias yproject3='yLoadWorkspace /path/to/customerC/project3 "Customer Projekt3"
 ```
 
 Registering these aliases will allow you to simply type `yproject1` instead of
-the long command every time. The second parameter `<NAME>` is optional, but
+the long command every time. The second parameter `name` is optional, but
 it will be printed and used as title for the terminal window. Therefore, it
 helps to have a better overview over multiple projects in separate windows.
 
 # Configuration
 
-The preconfigured configuration profiles and the explaination of the mechanism is part of the [configuration README.me](./configuration/README.md). Please go there for further details about configuration options.
+The preconfigured configuration profiles and the explaination of the mechanism
+is part of the [configuration README.md](./configuration/README.md). Please go
+there for further details about configuration options.
