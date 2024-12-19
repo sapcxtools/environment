@@ -1,10 +1,10 @@
 # CX DEV Environment Alias
-alias toworkspace='cd "$WORKSPACE_HOME"'
-alias toplatform='cd "$PLATFORM_HOME"'
-alias toconfig='cd "$HYBRIS_OPT_CONFIG_DIR"'
-alias tostorefront='cd "$STOREFRONT_HOME"'
+alias toworkspace='cd "$CXDEV_WORKSPACE_HOME"'
+alias toplatform='cd "$CXDEV_PLATFORM_HOME"'
+alias toconfig='cd "$CXDEV__OPT_CONFIG_DIR"'
+alias tostorefront='cd "$CXDEV_STOREFRONT_HOME"'
 
-alias yreload='yLoadWorkspace "$WORKSPACE_HOME" "$WORKSPACE_NAME" true'
+alias yreload='yLoadWorkspace "$CXDEV_WORKSPACE_HOME" "$CXDEV_WORKSPACE_NAME" true'
 alias ysetup='toworkspace && ./gradlew setupLocalDevelopment && yreload'
 alias yreformat='toworkspace && ./gradlew spotlessApply'
 
@@ -20,7 +20,7 @@ alias ydebug='toplatform && ./hybrisserver.sh debug'
 alias ystorefront='tostorefront && npm start'
 alias ystorefrontssl='tostorefront && npm local'
 
-alias ymails='open $PLATFORM_HOME/../../log/mails'
+alias ymails='open $CXDEV_PLATFORM_HOME/../../log/mails'
 alias yunittests='toplatform && ant unittests && toworkspace && ytestresult'
 alias yinttests='toplatform && ant integrationtests && toworkspace && ytestresult'
-alias ytestresult='open $WORKSPACE_HOME/core-customize/hybris/log/junit/test-results/index.html'
+alias ytestresult='open $CXDEV_WORKSPACE_HOME/core-customize/hybris/log/junit/test-results/index.html'
