@@ -156,12 +156,12 @@ function yLoadWorkspace {
 		echo -e "${_yinfo}[INFO] Loading Apache ant settings from platform.${_yclear}"
 		echo -ne "${_ydebug}"
 		cd "$CXDEV_PLATFORM_HOME"
-		source setantenv.sh | indent
+		source setantenv.sh | _yindent
 		echo -ne "${_yclear}"
 
 		# Load SAP Commerce configuration
 		echo -e "${_yinfo}[INFO] Environment configuration found at: ${_yunderline}$CXDEV_PLATFORM_HOME/env.properties${_yclear}"
-		RELATIVE_CONFIG_DIR=$(cat "$CXDEV_PLATFORM_HOME/env.properties" | grep CXDEV_CONFIG_DIR | sed "s#CXDEV_CONFIG_DIR=\\\${platformhome}#.#" | tr -d '\r\n')
+		RELATIVE_CONFIG_DIR=$(cat "$CXDEV_PLATFORM_HOME/env.properties" | grep HYBRIS_CONFIG_DIR | sed "s#HYBRIS_CONFIG_DIR=\\\${platformhome}#.#" | tr -d '\r\n')
 		CXDEV_CONFIG_DIR=$(realpath "$CXDEV_PLATFORM_HOME/$RELATIVE_CONFIG_DIR")
 		echo -e "${_yinfo}[INFO] Using configuration folder at: ${_yunderline}$CXDEV_CONFIG_DIR${_yclear}"
 		if [ -d "$CXDEV_CONFIG_DIR/local-config" ]; then
@@ -237,7 +237,7 @@ function yLoadWorkspace {
 	echo -e "${_yinfo}[INFO] CXDEV Tools Environment Setup finished.${_yclear}"
 	echo -n -e "\033]0;${CXDEV_WORKSPACE_NAME}\007"
 
-	yShowWorkspace | indent
+	yShowWorkspace | _yindent
 	
 	# Export environment variables
 	export CXDEV_WORKSPACE_HOME
@@ -301,8 +301,4 @@ function _yLoadWorkspaceHelp {
 	echo -e         "                        - within the log messages"
 	echo -e         "                        - title of the terminal window"
 	echo -e "${_yreset}${_yclear}"
-}
-
-function indent {
-	sed 's/^/       /'
 }

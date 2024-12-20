@@ -10,3 +10,8 @@ _yitalic="\e[3m"
 _yunderline="\e[4m"
 _yblink="\e[5m"
 _yreset="\e[21m\e[22m\e[23m\e[24m\e[25m\e[26m\e[27m\e[28m\e[29m"
+
+# Indent functions for log messages
+function _yindent {
+	sed 's/^/       /'
+}
