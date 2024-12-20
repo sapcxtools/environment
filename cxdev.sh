@@ -1,4 +1,5 @@
 export CXDEVHOME=$(dirname "$(realpath $0)")
+export CXDEVSYNCDIR="$CXDEVHOME/dependencies/sapartefacts"
 
 # Include CX DEV environment files
 source $CXDEVHOME/helper/format.sh

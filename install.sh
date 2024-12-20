@@ -132,7 +132,12 @@ rm -rf "$CXDEV_INSTALL_DIR/tmp"
 echo ""
 
 # Link in profile
-cxdev_init_snippet="$CXDEV_INSTALL_DIR/cxdev.sh"
+cxdev_init_snippet=$(cat <<-END
+# CXDEV Environment
+source "$CXDEV_INSTALL_DIR/cxdev.sh"
+#export CXDEVSYNCDIR="/mnt/sapartefacts"
+END
+)
 cxdev_bash_profile="${HOME}/.bash_profile"
 cxdev_profile="${HOME}/.profile"
 cxdev_bashrc="${HOME}/.bashrc"
@@ -145,6 +150,13 @@ if [[ "$(uname)" == "Darwin" ]]; then
     echo -e "\n$cxdev_init_snippet" >> "$cxdev_bash_profile"
     echo "Added cxdev init snippet to $cxdev_bash_profile"
   fi
+
+  echo "Attempt update of zsh profile..."
+  touch "$cxdev_zshrc"
+  if [[ -z $(grep 'cxdev.sh' "$cxdev_zshrc") ]]; then
+      echo -e "\n$cxdev_init_snippet" >> "$cxdev_zshrc"
+      echo "Added cxdev init snippet to ${cxdev_zshrc}"
+  fi
 else
   echo "Attempt update of interactive bash profile on regular UNIX..."
   touch "${cxdev_bashrc}"
@@ -152,13 +164,6 @@ else
       echo -e "\n$cxdev_init_snippet" >> "$cxdev_bashrc"
       echo "Added cxdev init snippet to $cxdev_bashrc"
   fi
-fi
-
-echo "Attempt update of zsh profile..."
-touch "$cxdev_zshrc"
-if [[ -z $(grep 'cxdev.sh' "$cxdev_zshrc") ]]; then
-    echo -e "\n$cxdev_init_snippet" >> "$cxdev_zshrc"
-    echo "Added cxdev init snippet to ${cxdev_zshrc}"
 fi
 
 echo -e "\n\n\nAll done!\n\n"

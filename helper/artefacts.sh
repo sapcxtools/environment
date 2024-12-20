@@ -17,12 +17,15 @@ function ySyncArtefacts {
 		return 2
 	fi
 
-	# Sync Dependencies with CXDEV sync folder
+	# Cleanup broken links
+	find -L "${CXDEVHOME}/dependencies/sapartefacts" -depth 1 -type l -exec rm -f {} \;
+
+	# Sync dependencies
 	if command -v jq > /dev/null; then
 		COMMERCESUITE_VERSION=$(jq '.commerceSuiteVersion' -r "$MANIFEST_FILE")
 		echo -e "${_yinfo}[INFO] Manifest file location to use: ${_yunderline}$MANIFEST_FILE${_yclear}"
 		echo -e "${_yinfo}[INFO] SAP Commerce Suite version in manifest: ${_ybold}$COMMERCESUITE_VERSION${_yclear}"
-		_ySyncArtefact "commerce-suite" "$COMMERCESUITE_VERSION"
+		_ySyncArtefact "hybris-commerce-suite" "$COMMERCESUITE_VERSION"
 
 		echo -e "${_yinfo}[INFO] Processing extension packs in manifest"
 		for i in $(jq '.extensionPacks[]?.name' -c -r "$MANIFEST_FILE"); do
@@ -31,6 +34,9 @@ function ySyncArtefacts {
 			echo -e "${_yinfo}[INFO] Found extension pack: ${_ybold}$EXTPACK_NAME${_yreset} (version: ${_ybold}$EXTPACK_VERSION${_yreset})${_yclear}"
 			_ySyncArtefact "$EXTPACK_NAME" "$EXTPACK_VERSION"
 		done
+	else
+		echo -e "${_ywarn}[WARN] Cannot sync dependencies as parsing the manifest files requires the tool 'jq' being available.${_yclear}"
+		echo -e "${_ywarn}[WARN] ${_yblink}Consider installing 'jq' for your local machine to gain the best from CX DEV.${_yclear}"
 	fi	
 }
 
@@ -40,13 +46,12 @@ function _ySyncArtefact {
 		setopt local_options bash_rematch
 	fi
 
+	# Find artefact name and IDs used by SAP in downloadable artefacts
 	ARTEFACT_NAME=
 	ARTEFACT_ID1=
 	ARTEFACT_ID2=
-
-	# Find artefact name and IDs used by SAP in downloadable artefacts
 	case "$1" in
-		"commerce-suite")
+		"hybris-commerce-suite")
 			ARTEFACT_NAME="$1"
 			ARTEFACT_ID1="CXCOMCL"
 			ARTEFACT_ID2="CXCOMM"
@@ -75,7 +80,7 @@ function _ySyncArtefact {
 	fi
 
 	# First check if the file is already available
-	TARGET_PATH="${CXDEVHOME}/dependencies/${ARTEFACT_NAME}/${ARTEFACT_NAME}-${VERSION}.${PATCH_LEVEL}.zip"
+	TARGET_PATH="${CXDEVHOME}/dependencies/sapartefacts/${ARTEFACT_NAME}-${VERSION}.${PATCH_LEVEL}.zip"
 	if [ -f "$TARGET_PATH" ]; then
 		echo -e "${_yinfo}[INFO] Artefact found in local cache: ${_yunderline}$TARGET_PATH${_yclear}"
 		return 0
@@ -98,7 +103,10 @@ function _ySyncArtefact {
 	if [ -f "$SOURCE_PATH" ]; then
 		echo -e "${_yinfo}[INFO] Artefact found in sync folder: ${_yunderline}$SOURCE_PATH${_yclear}"
 		echo -e "${_yinfo}[INFO] Copy artefact to local cache: ${_yunderline}$TARGET_PATH${_yclear}"
-		if command -v rsync > /dev/null; then
+		
+		if [[ $(dirname "$TARGET_PATH") =~ "^$CXDEVSYNCDIR/*" ]]; then
+			ln -s "$SOURCE_PATH" "$TARGET_PATH"
+		elif command -v rsync > /dev/null; then
 			rsync -h --progress "$SOURCE_PATH" "$TARGET_PATH"
 		else
 			cp "$SOURCE_PATH" "$TARGET_PATH"

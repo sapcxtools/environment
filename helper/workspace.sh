@@ -33,9 +33,9 @@ function yLoadWorkspace {
 		CXDEV_WORKSPACE_NAME=`/usr/bin/basename $1`
 	fi
 
-	# Link global dependencies
+	# Link SAP artefact dependencies
 	if [ -d "$CXDEV_GLOBAL_DEPENDENCIES" ]; then
-		if [ -L "$CXDEV_WORKSPACE_HOME/dependencies" ] && [[ $(readlink "$CXDEV_WORKSPACE_HOME/dependencies") == "$CXDEV_GLOBAL_DEPENDENCIES" ]]; then
+		if [ -L "$CXDEV_WORKSPACE_HOME/dependencies" ] && [[ $(readlink "$CXDEV_WORKSPACE_HOME/dependencies") == "$CXDEV_GLOBAL_DEPENDENCIES/sapartefacts" ]]; then
 			echo -e "${_yinfo}[INFO] Global dependencies folder already linked, no optimization needed.${_yclear}"
 		else
 			if [ -d "$CXDEV_WORKSPACE_HOME/dependencies" ]; then 
@@ -44,7 +44,7 @@ function yLoadWorkspace {
 			else
 				echo -e "${_yinfo}[INFO] Link dependencies to global dependencies folder to save disk space!${_yclear}"
 			fi
-			ln -s "$CXDEV_GLOBAL_DEPENDENCIES" "$CXDEV_WORKSPACE_HOME/dependencies"
+			ln -s "$CXDEV_GLOBAL_DEPENDENCIES/sapartefacts" "$CXDEV_WORKSPACE_HOME/dependencies"
 		fi
 	fi
 	
