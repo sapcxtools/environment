@@ -1,16 +1,3 @@
-# Define ANSI colors and markers
-clear="\e[0m"
-error="\e[31m"
-warn="\e[33m"
-info="\e[32m"
-debug="\e[34m"
-
-bold="\e[1m"
-italic="\e[3m"
-underline="\e[4m"
-blink="\e[5m"
-reset="\e[21m\e[22m\e[23m\e[24m\e[25m\e[26m\e[27m\e[28m\e[29m"
-
 # Global configurations
 CXDEV_GLOBAL_DEPENDENCIES="$CXDEVHOME/dependencies"
 CXDEV_GLOBAL_CERTIFICATES="$CXDEVHOME/certificates"
@@ -23,16 +10,16 @@ function yLoadWorkspace {
 	fi
 	alias echo='[[ "$MODE" != "silent" ]] && echo'
 
-	[[ "$MODE" != "silent" ]] && echo -e "${info}[INFO] CXDEV Tools Environment Setup for SAP Commerce Cloud${clear}"
+	[[ "$MODE" != "silent" ]] && echo -e "${_yinfo}[INFO] CXDEV Tools Environment Setup for SAP Commerce Cloud${_yclear}"
 
 	if [[ "" == "$1" ]]; then
-		echo -e "${error}[ERROR] CXDEV Tools cannot apply SAP Commerce workspace settings due to missing ${bold}path${reset} parameter!${clear}"
+		echo -e "${_yerror}[ERROR] CXDEV Tools cannot apply SAP Commerce workspace settings due to missing ${_ybold}path${_yreset} parameter!${_yclear}"
 		_yLoadWorkspaceHelp
 		return 1
 	fi
 
 	if [ ! -d "$1" ]; then
-		echo -e "${error}[ERROR] CXDEV Tools cannot find a SAP Commerce workspace at ${underline}$1${reset}.${clear}"
+		echo -e "${_yerror}[ERROR] CXDEV Tools cannot find a SAP Commerce workspace at ${_yunderline}$1${_yreset}.${_yclear}"
 		_yLoadWorkspaceHelp
 		return 1
 	fi
@@ -49,13 +36,13 @@ function yLoadWorkspace {
 	# Link global dependencies
 	if [ -d "$CXDEV_GLOBAL_DEPENDENCIES" ]; then
 		if [ -L "$CXDEV_WORKSPACE_HOME/dependencies" ] && [[ $(readlink "$CXDEV_WORKSPACE_HOME/dependencies") == "$CXDEV_GLOBAL_DEPENDENCIES" ]]; then
-			echo -e "${info}[INFO] Global dependencies folder already linked, no optimization needed.${clear}"
+			echo -e "${_yinfo}[INFO] Global dependencies folder already linked, no optimization needed.${_yclear}"
 		else
 			if [ -d "$CXDEV_WORKSPACE_HOME/dependencies" ]; then 
-				echo -e "${info}[INFO] Relink dependencies to global dependencies folder to save disk space!${clear}"
+				echo -e "${_yinfo}[INFO] Relink dependencies to global dependencies folder to save disk space!${_yclear}"
 				rm -Rf "$CXDEV_WORKSPACE_HOME/dependencies"
 			else
-				echo -e "${info}[INFO] Link dependencies to global dependencies folder to save disk space!${clear}"
+				echo -e "${_yinfo}[INFO] Link dependencies to global dependencies folder to save disk space!${_yclear}"
 			fi
 			ln -s "$CXDEV_GLOBAL_DEPENDENCIES" "$CXDEV_WORKSPACE_HOME/dependencies"
 		fi
@@ -64,16 +51,16 @@ function yLoadWorkspace {
 	# Link global certificates
 	if [ -d "$CXDEV_GLOBAL_CERTIFICATES" ]; then
 		if [ -L "$CXDEV_WORKSPACE_HOME/certificates" ] && [[ $(readlink "$CXDEV_WORKSPACE_HOME/certificates") == "$CXDEV_GLOBAL_CERTIFICATES" ]]; then
-			echo -e "${info}[INFO] Global certificates folder already linked, no optimization needed.${clear}"
+			echo -e "${_yinfo}[INFO] Global certificates folder already linked, no optimization needed.${_yclear}"
 		else
 			if [ -d "$CXDEV_WORKSPACE_HOME/certificates" ]; then 
-				echo -e "${info}[INFO] Use local certificates folder from workspace configuration! (Remove and rerun to use global certificates instead)${clear}"
+				echo -e "${_yinfo}[INFO] Use local certificates folder from workspace configuration! (Remove and rerun to use global certificates instead)${_yclear}"
 			else 
 				if [ -L "$CXDEV_WORKSPACE_HOME/certificates" ]; then 
-					echo -e "${info}[INFO] Relink certificates to global certificates folder!${clear}"
+					echo -e "${_yinfo}[INFO] Relink certificates to global certificates folder!${_yclear}"
 					rm -Rf "$CXDEV_WORKSPACE_HOME/certificates"
 				else
-					echo -e "${info}[INFO] Link certificates to global certificates folder!${clear}"
+					echo -e "${_yinfo}[INFO] Link certificates to global certificates folder!${_yclear}"
 				fi
 				ln -s "$CXDEV_GLOBAL_CERTIFICATES" "$CXDEV_WORKSPACE_HOME/certificates"
 			fi
@@ -85,34 +72,34 @@ function yLoadWorkspace {
 	CXDEV_JAVA_VERSION_FILE=$(find "$CXDEV_WORKSPACE_HOME" -iname '.java-version' -maxdepth 3 | head -1)
 	if [ -f "$CXDEV_JAVA_VERSION_FILE" ]; then
 		CXDEV_JAVA_VERSION=$(cat "$CXDEV_JAVA_VERSION_FILE")
-		echo -e "${info}[INFO] Java version ${bold}$CXDEV_JAVA_VERSION${reset} defined in: ${underline}$CXDEV_JAVA_VERSION_FILE${reset}${clear}"
+		echo -e "${_yinfo}[INFO] Java version ${_ybold}$CXDEV_JAVA_VERSION${_yreset} defined in: ${_yunderline}$CXDEV_JAVA_VERSION_FILE${_yreset}${_yclear}"
 		SDKMAN_JAVA_HOME=$(sdk home java $CXDEV_JAVA_VERSION)
 		if [ ! -d "$SDKMAN_JAVA_HOME" ]; then
-			echo -e "${info}[INFO] Java version ${bold}$CXDEV_JAVA_VERSION${reset} not available! Trying to install with SDKman:${clear}"
-			echo -ne "${debug}"
+			echo -e "${_yinfo}[INFO] Java version ${_ybold}$CXDEV_JAVA_VERSION${_yreset} not available! Trying to install with SDKman:${_yclear}"
+			echo -ne "${_ydebug}"
 			sdk install java $CXDEV_JAVA_VERSION
-			echo -ne "${clear}"
+			echo -ne "${_yclear}"
 
 			SDKMAN_JAVA_HOME=$(sdk home java $CXDEV_JAVA_VERSION)
 			if [ ! -d "$SDKMAN_JAVA_HOME" ]; then
-				echo -e "${error}[ERROR] Java version ${bold}$CXDEV_JAVA_VERSION${reset} cannot be installed!${clear}"
+				echo -e "${_yerror}[ERROR] Java version ${_ybold}$CXDEV_JAVA_VERSION${_yreset} cannot be installed!${_yclear}"
 				return 2
 			else
-				echo -e "${info}[INFO] Java version ${bold}$CXDEV_JAVA_VERSION${reset} successfully installed with SDKman.${clear}"
+				echo -e "${_yinfo}[INFO] Java version ${_ybold}$CXDEV_JAVA_VERSION${_yreset} successfully installed with SDKman.${_yclear}"
 			fi
 		fi
 
-		echo -e "${info}[INFO] Loading Java version ${bold}$CXDEV_JAVA_VERSION${reset} using SDKman.${clear}"
+		echo -e "${_yinfo}[INFO] Loading Java version ${_ybold}$CXDEV_JAVA_VERSION${_yreset} using SDKman.${_yclear}"
 		sdk use java $CXDEV_JAVA_VERSION 2>&1 >> /dev/null
 	else
-		echo -e "${warn}[WARN] No Java version configured within workspace, missing file: ${underline}.java-version${clear}"
+		echo -e "${_ywarn}[WARN] No Java version configured within workspace, missing file: ${_yunderline}.java-version${_yclear}"
 		if command -v java > /dev/null; then
-			echo -e "${warn}[WARN] Fallback to Java version configured in system environment!${clear}"
+			echo -e "${_ywarn}[WARN] Fallback to Java version configured in system environment!${_yclear}"
 			CXDEV_JAVA_VERSION=$(java -version 2>&1 | head -1)
-			echo -e "${info}[INFO] Detected Java version is ${bold}$CXDEV_JAVA_VERSION${clear}"
-			echo -e "${warn}[WARN] ${blink}Please verify that the Java version is the correct for your repository!${clear}"
+			echo -e "${_yinfo}[INFO] Detected Java version is ${_ybold}$CXDEV_JAVA_VERSION${_yclear}"
+			echo -e "${_ywarn}[WARN] ${_yblink}Please verify that the Java version is the correct for your repository!${_yclear}"
 		else
-			echo -e "${error}[ERROR] Cannot fallback to Java version of system, Java was not found!${clear}"
+			echo -e "${_yerror}[ERROR] Cannot fallback to Java version of system, Java was not found!${_yclear}"
 			return 2
 		fi
 	fi
@@ -122,29 +109,29 @@ function yLoadWorkspace {
 	CXDEV_NODE_VERSION_FILE=$(find "$CXDEV_WORKSPACE_HOME" -iname '.node-version' -maxdepth 3 | head -1)
 	if [ -f "$CXDEV_NODE_VERSION_FILE" ]; then
 		CXDEV_NODE_VERSION=$(cat "$CXDEV_NODE_VERSION_FILE")
-		echo -e "${info}[INFO] Node version ${bold}$CXDEV_NODE_VERSION${reset} defined in: ${underline}$CXDEV_NODE_VERSION_FILE${clear}"
+		echo -e "${_yinfo}[INFO] Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} defined in: ${_yunderline}$CXDEV_NODE_VERSION_FILE${_yclear}"
 		if [ -z $(nodenv version-name) ]; then
-			echo -e "${warn}[WARN] Node version ${bold}$CXDEV_NODE_VERSION${reset} not available! Trying to install with nodenv:${clear}"
-			echo -ne "${debug}"
+			echo -e "${_ywarn}[WARN] Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} not available! Trying to install with nodenv:${_yclear}"
+			echo -ne "${_ydebug}"
 			nodenv install $CXDEV_NODE_VERSION
-			echo -ne "${clear}"
+			echo -ne "${_yclear}"
 
 			if [ -z $(nodenv version-name) ]; then
-				echo -e "${warn}[WARN] Node version ${bold}$CXDEV_NODE_VERSION${reset} cannot be installed!${clear}"
+				echo -e "${_ywarn}[WARN] Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} cannot be installed!${_yclear}"
 				return 2
 			else
-				echo -e "${info}[INFO] Node version ${bold}$CXDEV_NODE_VERSION${reset} successfully installed with nodenv.${clear}"
+				echo -e "${_yinfo}[INFO] Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} successfully installed with nodenv.${_yclear}"
 			fi
 		fi
 
-		echo -e "${info}[INFO] Loading Node version ${bold}$CXDEV_NODE_VERSION${reset} using nodenv.${clear}"
+		echo -e "${_yinfo}[INFO] Loading Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} using nodenv.${_yclear}"
 		nodenv shell $CXDEV_NODE_VERSION 2>&1 >> /dev/null
 	elif [ -d "$CXDEV_WORKSPACE_HOME/js-storefront" ]; then
-		echo -e "${warn}[WARN] No node version configured within workspace, missing file: ${underline}.node-version${clear}"
-		echo -e "${warn}[WARN] Fallback to node version configured in system environment!${clear}"
+		echo -e "${_ywarn}[WARN] No node version configured within workspace, missing file: ${_yunderline}.node-version${_yclear}"
+		echo -e "${_ywarn}[WARN] Fallback to node version configured in system environment!${_yclear}"
 		CXDEV_NODE_VERSION=$(nodenv version-name)
-		echo -e "${info}[INFO] Detected node version is ${bold}$CXDEV_NODE_VERSION${clear}"
-		echo -e "${warn}[WARN] ${blink}Please verify that the node version is the correct for your project!${clear}"
+		echo -e "${_yinfo}[INFO] Detected node version is ${_ybold}$CXDEV_NODE_VERSION${_yclear}"
+		echo -e "${_ywarn}[WARN] ${_yblink}Please verify that the node version is the correct for your project!${_yclear}"
 	fi
 
 	# Detect platform structure (supported are classic, embedded or CCv2)
@@ -155,7 +142,7 @@ function yLoadWorkspace {
 	fi
 	CXDEV_PLATFORM_HOME_CCV2=$CXDEV_WORKSPACE_HOME/core-customize/hybris/bin/platform
 	if [ -d "$CXDEV_WORKSPACE_HOME/core-customize" ]; then
-		echo -e "${info}[INFO] Cloud repository structure detected!${clear}"
+		echo -e "${_yinfo}[INFO] Cloud repository structure detected!${_yclear}"
 		CXDEV_PLATFORM_HOME=$CXDEV_PLATFORM_HOME_CCV2
 
 		ySyncArtefacts "$CXDEV_WORKSPACE_HOME/core-customize/manifest.json"
@@ -163,27 +150,27 @@ function yLoadWorkspace {
 
 	# Load SAP Commerce platform environment
 	if [ -d "$CXDEV_PLATFORM_HOME" ]; then
-		echo -e "${info}[INFO] SAP Commerce installation found at: ${underline}$CXDEV_PLATFORM_HOME${clear}"
+		echo -e "${_yinfo}[INFO] SAP Commerce installation found at: ${_yunderline}$CXDEV_PLATFORM_HOME${_yclear}"
 
 		# Load Ant environment
-		echo -e "${info}[INFO] Loading Apache ant settings from platform.${clear}"
-		echo -ne "${debug}"
+		echo -e "${_yinfo}[INFO] Loading Apache ant settings from platform.${_yclear}"
+		echo -ne "${_ydebug}"
 		cd "$CXDEV_PLATFORM_HOME"
 		source setantenv.sh | indent
-		echo -ne "${clear}"
+		echo -ne "${_yclear}"
 
 		# Load SAP Commerce configuration
-		echo -e "${info}[INFO] Environment configuration found at: ${underline}$CXDEV_PLATFORM_HOME/env.properties${clear}"
+		echo -e "${_yinfo}[INFO] Environment configuration found at: ${_yunderline}$CXDEV_PLATFORM_HOME/env.properties${_yclear}"
 		RELATIVE_CONFIG_DIR=$(cat "$CXDEV_PLATFORM_HOME/env.properties" | grep CXDEV_CONFIG_DIR | sed "s#CXDEV_CONFIG_DIR=\\\${platformhome}#.#" | tr -d '\r\n')
 		CXDEV_CONFIG_DIR=$(realpath "$CXDEV_PLATFORM_HOME/$RELATIVE_CONFIG_DIR")
-		echo -e "${info}[INFO] Using configuration folder at: ${underline}$CXDEV_CONFIG_DIR${clear}"
+		echo -e "${_yinfo}[INFO] Using configuration folder at: ${_yunderline}$CXDEV_CONFIG_DIR${_yclear}"
 		if [ -d "$CXDEV_CONFIG_DIR/local-config" ]; then
 			CXDEV_OPT_CONFIG_DIR="$CXDEV_CONFIG_DIR/local-config"
-			echo -e "${info}[INFO] Additional local configuration found at: ${underline}$CXDEV_OPT_CONFIG_DIR${clear}"
+			echo -e "${_yinfo}[INFO] Additional local configuration found at: ${_yunderline}$CXDEV_OPT_CONFIG_DIR${_yclear}"
 			
 			# Relink global configuration profiles
 			ENABLEDPROFILESHOME=$CXDEV_GLOBAL_CONFIGURATIONS/enabled
-			echo -e "${info}[INFO] Relink global configuration profiles from: ${underline}$ENABLEDPROFILESHOME${clear}"
+			echo -e "${_yinfo}[INFO] Relink global configuration profiles from: ${_yunderline}$ENABLEDPROFILESHOME${_yclear}"
 
 			[ -f "$CXDEV_OPT_CONFIG_DIR/80-local.properties" ] && rm -f "$CXDEV_OPT_CONFIG_DIR/80-local.properties"
 			[ -f "$CXDEV_OPT_CONFIG_DIR/81-local.properties" ] && rm -f "$CXDEV_OPT_CONFIG_DIR/81-local.properties"
@@ -200,8 +187,8 @@ function yLoadWorkspace {
 				find "$ENABLEDPROFILESHOME" -type l -iname "8*-local.properties" | xargs -I {} cp -R {} "$CXDEV_OPT_CONFIG_DIR"
 			fi
 		else
-			echo -e "${info}[INFO] No optional ${bold}local-config${reset} folder found at in your config folder.${clear}"
-			echo -e "${info}[INFO] ${blink}Consider updating your workspace to make use of local-config folder!${clear}"
+			echo -e "${_yinfo}[INFO] No optional ${_ybold}local-config${_yreset} folder found at in your config folder.${_yclear}"
+			echo -e "${_yinfo}[INFO] ${_yblink}Consider updating your workspace to make use of local-config folder!${_yclear}"
 			CXDEV_OPT_CONFIG_DIR=
 		fi
 
@@ -210,9 +197,9 @@ function yLoadWorkspace {
 		if [ -d "$SAPJCO_LIB_PATH" ]; then
 			OS=$(/usr/bin/uname)
 			CPU_ARCHITECTURE=$(/usr/bin/uname -m)
-			echo -e "${info}[INFO] SAP JCO Library found at: ${underline}$SAPJCO_LIB_PATH${clear}"
+			echo -e "${_yinfo}[INFO] SAP JCO Library found at: ${_yunderline}$SAPJCO_LIB_PATH${_yclear}"
 			if [[ "$OS" == "Darwin" && "$CPU_ARCHITECTURE" == "arm64" ]]; then
-				echo -e "${info}[INFO] $OS/$CPU_ARCHITECTURE detected, replacing JCO Library with version from: ${underline}$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current${clear}"
+				echo -e "${_yinfo}[INFO] $OS/$CPU_ARCHITECTURE detected, replacing JCO Library with version from: ${_yunderline}$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current${_yclear}"
 				rm -f "$SAPJCO_LIB_PATH/sapjco3.jar"
 				rm -f "$SAPJCO_LIB_PATH/sapjcomanifest.mf"
 				rm -f "$SAPJCO_LIB_PATH/libsapjco3.dylib"
@@ -221,7 +208,7 @@ function yLoadWorkspace {
 				ln -s "$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/libsapjco3.dylib" "$SAPJCO_LIB_PATH"
 			fi
 			if [[ "$OS" == "Linux" && "$CPU_ARCHITECTURE" == "arm64" ]]; then
-				echo -e "${info}[INFO] $OS/$CPU_ARCHITECTURE detected, replacing JCO Library with version from: ${underline}$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current${clear}"
+				echo -e "${_yinfo}[INFO] $OS/$CPU_ARCHITECTURE detected, replacing JCO Library with version from: ${_yunderline}$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current${_yclear}"
 				rm -f "$SAPJCO_LIB_PATH/sapjco3.jar"
 				rm -f "$SAPJCO_LIB_PATH/sapjcomanifest.mf"
 				rm -f "$SAPJCO_LIB_PATH/libsapjco3.so"
@@ -231,7 +218,7 @@ function yLoadWorkspace {
 			fi
 		fi
 	else
-		echo -e "${warn}[WARN] No hybris installation found at: ${underline}$CXDEV_PLATFORM_HOME${clear}"
+		echo -e "${_ywarn}[WARN] No hybris installation found at: ${_yunderline}$CXDEV_PLATFORM_HOME${_yclear}"
 		CXDEV_PLATFORM_HOME=
 		CXDEV_CONFIG_DIR=
 		CXDEV_OPT_CONFIG_DIR=
@@ -241,13 +228,13 @@ function yLoadWorkspace {
 	CXDEV_STOREFRONT_HOME=
 	if [ -d "$CXDEV_WORKSPACE_HOME/js-storefront" ]; then
 		CXDEV_STOREFRONT_HOME=$(find "$CXDEV_WORKSPACE_HOME/js-storefront" -type d -not -iname "js-storefront" -not -iname "bootstrap" -not -iname "build" -maxdepth 1)
-		echo -e "${info}[INFO] Composable storefront found at: ${underline}$CXDEV_STOREFRONT_HOME${clear}"
+		echo -e "${_yinfo}[INFO] Composable storefront found at: ${_yunderline}$CXDEV_STOREFRONT_HOME${_yclear}"
 	fi
 
 	# Switch to workspace
 	cd "$CXDEV_WORKSPACE_HOME"
-	echo -e "${info}[INFO] Switched to workspace location: ${underline}$CXDEV_WORKSPACE_HOME${clear}"
-	echo -e "${info}[INFO] CXDEV Tools Environment Setup finished.${clear}"
+	echo -e "${_yinfo}[INFO] Switched to workspace location: ${_yunderline}$CXDEV_WORKSPACE_HOME${_yclear}"
+	echo -e "${_yinfo}[INFO] CXDEV Tools Environment Setup finished.${_yclear}"
 	echo -n -e "\033]0;${CXDEV_WORKSPACE_NAME}\007"
 
 	yShowWorkspace | indent
@@ -266,22 +253,22 @@ function yLoadWorkspace {
 }
 
 function yShowWorkspace {
-	echo -e "${info}"
-	echo -e "${bold}Workspace Overview${reset}"
+	echo -e "${_yinfo}"
+	echo -e "${_ybold}Workspace Overview${_yreset}"
 	echo -e "==============================================================================="
-	echo -e "${bold}Workspace name${reset}           ${italic}$CXDEV_WORKSPACE_NAME${reset}"
-	echo -e "${bold}Workspace path${reset}           ${underline}$CXDEV_WORKSPACE_HOME${reset}"
+	echo -e "${_ybold}Workspace name${_yreset}           ${_yitalic}$CXDEV_WORKSPACE_NAME${_yreset}"
+	echo -e "${_ybold}Workspace path${_yreset}           ${_yunderline}$CXDEV_WORKSPACE_HOME${_yreset}"
 	echo -e "==============================================================================="
-	echo -e "${bold}Platform home${reset}            ${underline}$CXDEV_PLATFORM_HOME${reset}"
-	echo -e "${bold}Hybris Configuration${reset}     ${underline}$CXDEV_OPT_CONFIG_DIR${reset}"
-	echo -e "${bold}Optional Configuration${reset}   ${underline}$CXDEV_OPT_CONFIG_DIR${reset}"
-	echo -e "${bold}Storefront home${reset}          ${underline}$CXDEV_STOREFRONT_HOME${reset}"
+	echo -e "${_ybold}Platform home${_yreset}            ${_yunderline}$CXDEV_PLATFORM_HOME${_yreset}"
+	echo -e "${_ybold}Hybris Configuration${_yreset}     ${_yunderline}$CXDEV_OPT_CONFIG_DIR${_yreset}"
+	echo -e "${_ybold}Optional Configuration${_yreset}   ${_yunderline}$CXDEV_OPT_CONFIG_DIR${_yreset}"
+	echo -e "${_ybold}Storefront home${_yreset}          ${_yunderline}$CXDEV_STOREFRONT_HOME${_yreset}"
 	echo -e "==============================================================================="
 	if command -v jq > /dev/null; then
 		MANIFEST_FILE=$CXDEV_WORKSPACE_HOME/core-customize/manifest.json
 		if [ -f "$MANIFEST_FILE" ]; then
 			COMMERCESUITE_VERSION=$(jq '.commerceSuiteVersion' -r $MANIFEST_FILE)
-			echo -e "SAP Commerce Suite (in manifest): $COMMERCESUITE_VERSION${reset}"
+			echo -e "SAP Commerce Suite (in manifest): $COMMERCESUITE_VERSION${_yreset}"
 			echo -e "Extension Packs (in manifest):"
 			for i in $(jq '.extensionPacks[]?.name' -c -r "$MANIFEST_FILE"); do
 				EXTPACK_NAME=$i
@@ -291,29 +278,29 @@ function yShowWorkspace {
 			echo -e "==============================================================================="
 		fi
 	fi
-	echo -e "${bold}Java version (detected)${reset}  ${italic}$CXDEV_JAVA_VERSION${reset}"
-	echo -e "${bold}Java version file${reset}        ${italic}$CXDEV_JAVA_VERSION_FILE${reset}"
-	echo -e "${bold}Node version (detected)${reset}  ${italic}$CXDEV_NODE_VERSION${reset}"
-	echo -e "${bold}Node version file${reset}        ${italic}$CXDEV_NODE_VERSION_FILE${reset}"
+	echo -e "${_ybold}Java version (detected)${_yreset}  ${_yitalic}$CXDEV_JAVA_VERSION${_yreset}"
+	echo -e "${_ybold}Java version file${_yreset}        ${_yitalic}$CXDEV_JAVA_VERSION_FILE${_yreset}"
+	echo -e "${_ybold}Node version (detected)${_yreset}  ${_yitalic}$CXDEV_NODE_VERSION${_yreset}"
+	echo -e "${_ybold}Node version file${_yreset}        ${_yitalic}$CXDEV_NODE_VERSION_FILE${_yreset}"
 	echo -e "==============================================================================="
-	echo -ne "${clear}"
+	echo -ne "${_yclear}"
 }
 
 function _yLoadWorkspaceHelp {
 	echo
 	echo -e         "        usage: yLoadWorkspace path [name]"
 	echo 
-	echo -e         "${bold}OPTION SUMMARY${reset}"
+	echo -e         "${_ybold}OPTION SUMMARY${_yreset}"
 	echo 
 	echo -e         "        path            the workspace path, typically the root directory"
 	echo -e         "                        of the project's git repository used by SAP!"
 	echo -e         "                        This folder should contain the root directories"
-	echo -e         "                        ${bold}'core-customize'${reset} and optional 'js-storefront'."
+	echo -e         "                        ${_ybold}'core-customize'${_yreset} and optional 'js-storefront'."
 	echo -e         "        name            the workspace name (optional parameter)"
 	echo -e         "                        the name is used"
 	echo -e         "                        - within the log messages"
 	echo -e         "                        - title of the terminal window"
-	echo -e "${reset}${clear}"
+	echo -e "${_yreset}${_yclear}"
 }
 
 function indent {
