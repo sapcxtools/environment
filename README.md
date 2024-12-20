@@ -160,11 +160,17 @@ In order to use of the CXDEV environment, please make sure that you have
 downloaded the installation artefacts from SAP that are references within your
 `manifest.json` file.
 
+We encourage you to configure the CXDEVSYNCDIR environment variable to point
+to a shared directory, eg. a company wide shared GDrive or OneDrive folder or
+maybe you are using a mount on your machine. Per default, the CXDEVSYNCDIR 
+points to your `$CXDEVHOME/dependencies/sapartefacts` folder and uses this.
+So if you are only working on your own, feel free to keep your SAP artefacts
+within this folder and organize them by artefact and year (if needed).
+
 For more information please refer to the README.md files within the two
 required and one optional artefacts:
 
-- [SAP Commerce Suite](./dependencies/commercesuite/README.md)
-- [SAP Commerce Integration Pack](./dependencies/integrationpack/README.md)
+- [SAP Artefacts](./dependencies/sapartefacts/README.md)
 - [SAP JCO Connector](./dependencies/sapjco/README.md)
 
 Restart your terminal once again and you are ready to start working with CXDEV!
