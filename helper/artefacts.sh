@@ -96,29 +96,20 @@ function _ySyncArtefact {
 	
 	SOURCE_PATH=$(find "$CXDEVSYNCDIR" -type f -iname "*${VERSION}*${PATCH_LEVEL}*" \( -iname "*${ARTEFACT_NAME}*" -o -iname "*${ARTEFACT_ID1}*" -o -iname "*${ARTEFACT_ID2}*" \))
 	if [ -f "$SOURCE_PATH" ]; then
-		echo "..... TODO SYMLINK (work in progress) ....."
-		# ln -s "$COMMERCE_ARTEFACT" 
-	fi
-}
-
-function _yUpdateArtefacts {
-	# Update Commerce Suite Artefacts
-	cd "$CXDEVHOME/dependencies/commercesuite"
-	_yRelinkArtefacts
-	
-	# Update Integration Pack Artefacts
-	cd "$CXDEVHOME/dependencies/integrationpack"
-	_yRelinkArtefacts
-}
-
-function _yRelinkArtefacts {
-	# Relink SAP Artefacts with correct versions
-	find . -maxdepth 1 -type l | xargs rm -f
-	for i in $(ls -A); do
-		if [[ $i =~ ^.*\.(zip|ZIP) ]]; then
-			ln -s $i $(echo $i | sed -E 's/([A-Z]+)([0-9]{4}).*_([0-9]{1,3})-.*(ZIP|zip)/\1-\2.\3.zip/g')
+		echo -e "${_yinfo}[INFO] Artefact found in sync folder: ${_yunderline}$SOURCE_PATH${_yclear}"
+		echo -e "${_yinfo}[INFO] Copy artefact to local cache: ${_yunderline}$TARGET_PATH${_yclear}"
+		if command -v rsync > /dev/null; then
+			rsync -h --progress "$SOURCE_PATH" "$TARGET_PATH"
+		else
+			cp "$SOURCE_PATH" "$TARGET_PATH"
 		fi
-	done
+	fi
+
+	if [ -f "$TARGET_PATH" ]; then
+		echo -e "${_yinfo}[INFO] Artefact downloaded successfully.${_yclear}"
+	else
+		echo -e "${_yinfo}[ERROR] Failed to download the artefact, please check!${_yclear}"
+	fi
 }
 
 function _ySyncArtefactsHelp {
