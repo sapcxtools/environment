@@ -17,3 +17,13 @@ Thumbs.db:encryptable
 # Windows Folder config file
 [Dd]esktop.ini
 
+# Dependencies
+dependencies/**/*.ZIP
+dependencies/**/*.zip
+dependencies/**/*.tgz
+dependencies/sapjco/sapjco*/
+dependencies/sapjco/current
+dependencies/sapjco/current/*
+
+# Configuration Profiles
+configuration/enabled/*
