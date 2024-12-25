@@ -36,11 +36,34 @@ with SAP Commerce Cloud tremendously.
 In order to make CX DEV environment work there are a couple of preconditions
 that need to be fulfilled:
 
+- Mac OS recommended package manager
 - Required command line tools for the terminal
-- SDKman: for handling of Java versions
-- nodenv: for handling of Node versions
+- SDKman for handling of Java versions
+- nodenv for handling of Node versions
 - The project layout must follow the CCv2 project template
 - For some features smaller customizations within the project layout are necessary 
+
+<details>
+  <summary>Mac OS recommended package managere</summary>
+
+Note: For Mac users, we still recommend to use the package manager "Homebrew"
+for the installation. Homebrew can be installed easily by running the following
+prompt:
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Note: It is very important to keep nodenv up-to-date on a frequently base.
+Another good reason to use a package manager for it. Homebrew updates with:
+
+```
+brew update
+brew upgrade
+```
+
+That's it!
+</details>
 
 <details>
   <summary>Required Command line tools</summary>
@@ -69,15 +92,7 @@ complete list as a reference:
 - `jq` (see https://jqlang.github.io/jq/)
 
 Command for Ubuntu: `sudo apt install curl jq`
-
-#### Optional (only necessary for manual installation of nodenv)
-
-- `gcc` (see https://gcc.gnu.org/)
-- `git` (see https://git-scm.com/)
-- `make` (see https://www.gnu.org/software/make/)
-
-
-Command for Ubuntu: `sudo apt install gcc git make`
+Command for Mac OS: `brew install curl jq`
 </details>
 
 <details>
@@ -119,30 +134,6 @@ export NODENV_DIR="$HOME/.nodenv"
 
 [[ -f "$NODENV_DIR/bin/nodenv" ]] && "$NODENV_DIR/bin/nodenv" init
 ```
-
-Note: For Mac users, we still recommend to use the package manager "Homebrew"
-for the installation. Homebrew can be installed easily by running the following
-prompt:
-
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-Afterwards we can install the basic tools by running the following commands:
-
-```
-brew install coreutils fontutils git git-flow nodenv
-```
-
-Note: It is very important to keep nodenv up-to-date on a frequently base.
-Another good reason to use a package manager for it. Homebrew updates with:
-
-```
-brew update
-brew upgrade
-```
-
-That's it!
 </details>
 
 <details>
