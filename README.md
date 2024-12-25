@@ -94,24 +94,35 @@ Afterwards to following lines have to be added to your shell run configuration
 (`~/.bashrc` or `~/.zshrc`) file:
 
 ```
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# Initialize SDKMAN
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 ```
-
 </details>
 
 <details>
   <summary>NODENV</summary>
 
-CXDEV use nodenv for managing the Node versions within the projects. For the
-installation we need to split by operating system, as the automatic setup
-process has not been established for all operating systems.
+CXDEV use nodenv for managing the Node versions within the projects. The
+installation also runs 100% automated by using the following prompt:
 
-#### Mac OS
+```
+curl -fsSL https://github.com/nodenv/nodenv-installer/raw/HEAD/bin/nodenv-installer | bash
+```
 
-We recommend to use the package manager "Homebrew" for the installation.
-Homebrew can be installed easily by running the following prompt:
+Afterwards to following lines have to be added to your shell run configuration
+(`~/.bashrc` or `~/.zshrc`) file:
+
+```
+# Initialize NODENV
+export NODENV_DIR="$HOME/.nodenv"
+
+[[ -f "$NODENV_DIR/bin/nodenv" ]] && "$NODENV_DIR/bin/nodenv" init
+```
+
+Note: For Mac users, we still recommend to use the package manager "Homebrew"
+for the installation. Homebrew can be installed easily by running the following
+prompt:
 
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -132,37 +143,6 @@ brew upgrade
 ```
 
 That's it!
-
-#### WSL2 under Windows
-
-For the installation of nodenv within a WSL container a couple of manual steps
-are required. The following shows the scripts required as a simply copy-paste
-process:
-
-```
-# install the base app
-git clone https://github.com/nodenv/nodenv.git ~/.nodenv
-# add nodenv to system wide bin dir to allow executing it everywhere
-sudo ln -vs ~/.nodenv/bin/nodenv /usr/local/bin/nodenv
-# compile dynamic bash extension to speed up nodenv - this can safely fail
-cd ~/.nodenv
-src/configure && make -C src || true
-cd ~/
-# install plugins
-mkdir -p "$(nodenv root)"/plugins
-git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
-git clone https://github.com/nodenv/nodenv-aliases.git $(nodenv root)/plugins/nodenv-aliases
-# install a node version to bootstrap shims
-nodenv install 23.5.0
-nodenv global 23
-# make shims available system wide
-sudo ln -vs $(nodenv root)/shims/* /usr/local/bin/
-# make sure everything is working
-node --version
-npm --version
-npx --version
-```
-
 </details>
 
 <details>
