@@ -69,7 +69,7 @@ function yLoadWorkspace {
 	
 	# Load Java environment
 	CXDEV_JAVA_VERSION=
-	CXDEV_JAVA_VERSION_FILE=$(find "$CXDEV_WORKSPACE_HOME" -iname '.java-version' -maxdepth 3 | head -1)
+	CXDEV_JAVA_VERSION_FILE=$(find "$CXDEV_WORKSPACE_HOME" -maxdepth 3 -iname '.java-version' | head -1)
 	if [ -f "$CXDEV_JAVA_VERSION_FILE" ]; then
 		CXDEV_JAVA_VERSION=$(cat "$CXDEV_JAVA_VERSION_FILE")
 		echo -e "${_yinfo}[INFO] Java version ${_ybold}$CXDEV_JAVA_VERSION${_yreset} defined in: ${_yunderline}$CXDEV_JAVA_VERSION_FILE${_yreset}${_yclear}"
@@ -106,7 +106,7 @@ function yLoadWorkspace {
 
 	# Load node environment
 	CXDEV_NODE_VERSION=
-	CXDEV_NODE_VERSION_FILE=$(find "$CXDEV_WORKSPACE_HOME" -iname '.node-version' -maxdepth 3 | head -1)
+	CXDEV_NODE_VERSION_FILE=$(find "$CXDEV_WORKSPACE_HOME" -maxdepth 3 -iname '.node-version' | head -1)
 	if [ -f "$CXDEV_NODE_VERSION_FILE" ]; then
 		CXDEV_NODE_VERSION=$(cat "$CXDEV_NODE_VERSION_FILE")
 		echo -e "${_yinfo}[INFO] Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} defined in: ${_yunderline}$CXDEV_NODE_VERSION_FILE${_yclear}"
@@ -227,7 +227,7 @@ function yLoadWorkspace {
 	# Load storefront configuration
 	CXDEV_STOREFRONT_HOME=
 	if [ -d "$CXDEV_WORKSPACE_HOME/js-storefront" ]; then
-		CXDEV_STOREFRONT_HOME=$(find "$CXDEV_WORKSPACE_HOME/js-storefront" -type d -not -iname "js-storefront" -not -iname "bootstrap" -not -iname "build" -maxdepth 1)
+		CXDEV_STOREFRONT_HOME=$(find "$CXDEV_WORKSPACE_HOME/js-storefront" -maxdepth 1 -type d -not -iname "js-storefront" -not -iname "bootstrap" -not -iname "build")
 		echo -e "${_yinfo}[INFO] Composable storefront found at: ${_yunderline}$CXDEV_STOREFRONT_HOME${_yclear}"
 	fi
 
