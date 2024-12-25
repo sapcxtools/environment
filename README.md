@@ -36,12 +36,52 @@ with SAP Commerce Cloud tremendously.
 In order to make CX DEV environment work there are a couple of preconditions
 that need to be fulfilled:
 
+- Required command line tools for the terminal
 - SDKman: for handling of Java versions
 - nodenv: for handling of Node versions
 - The project layout must follow the CCv2 project template
 - For some features smaller customizations within the project layout are necessary 
 
-### SDKMAN
+<details>
+  <summary>Required Command line tools</summary>
+
+The environment makes use of the following command line tools. Please make sure
+you have installed them by using a package manager of your choice. Most linux
+distributions will provide them out-of-the-box. Still, this list shall be a 
+complete list as a reference:
+
+#### Elementary (typically shipped with the linux distribution)
+
+- `basename`
+- `find`
+- `grep`
+- `ln`
+- `readlink`
+- `realpath`
+- `sed`
+- `tr`
+- `uname`
+- `unzip`
+
+#### Recommended (you still may need to install them manually)
+
+- `curl` (see https://curl.se/)
+- `jq` (see https://jqlang.github.io/jq/)
+
+Command for Ubuntu: `sudo apt install curl jq`
+
+#### Optional (only necessary for manual installation of nodenv)
+
+- `gcc` (see https://gcc.gnu.org/)
+- `git` (see https://git-scm.com/)
+- `make` (see https://www.gnu.org/software/make/)
+
+
+Command for Ubuntu: `sudo apt install gcc git make`
+</details>
+
+<details>
+  <summary>SDKMAN</summary>
 
 CXDEV uses SDKman for managing the Java versions (sapmachine) within the
 projects. The installation is 100% automated by using the following prompt:
@@ -59,7 +99,10 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 ```
 
-### NODENV
+</details>
+
+<details>
+  <summary>NODENV</summary>
 
 CXDEV use nodenv for managing the Node versions within the projects. For the
 installation we need to split by operating system, as the automatic setup
@@ -110,8 +153,8 @@ mkdir -p "$(nodenv root)"/plugins
 git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
 git clone https://github.com/nodenv/nodenv-aliases.git $(nodenv root)/plugins/nodenv-aliases
 # install a node version to bootstrap shims
-nodenv install 18.18.2
-nodenv global 18
+nodenv install 23.5.0
+nodenv global 23
 # make shims available system wide
 sudo ln -vs $(nodenv root)/shims/* /usr/local/bin/
 # make sure everything is working
@@ -120,7 +163,10 @@ npm --version
 npx --version
 ```
 
-### Project layout
+</details>
+
+<details>
+  <summary>Project layout</summary>
 
 We typically setup our repositories by initializing the project from the
 [CCv2 template provided by SAP](https://github.com/sap-commerce-tools/ccv2-project-template).
@@ -143,6 +189,7 @@ project scenarios:
 We are looking forward to merge back the changes to the global repository.
 Until then, we recommend to use the adjusted template from our repository:
 [Adjusted CCv2 template](https://github.com/sapcxtools/ccv2-project-template).
+</details>
 
 ## Installation<a name="installation"></a>
 
