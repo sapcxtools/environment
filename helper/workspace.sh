@@ -110,22 +110,20 @@ function yLoadWorkspace {
 	if [ -f "$CXDEV_NODE_VERSION_FILE" ]; then
 		CXDEV_NODE_VERSION=$(cat "$CXDEV_NODE_VERSION_FILE")
 		echo -e "${_yinfo}[INFO] Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} defined in: ${_yunderline}$CXDEV_NODE_VERSION_FILE${_yclear}"
-		if [ -z $(nodenv version-name) ]; then
+		echo -e "${_yinfo}[INFO] Loading Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} using nodenv.${_yclear}"
+		if ! nodenv shell $CXDEV_NODE_VERSION 2>&1 >> /dev/null ; then
 			echo -e "${_ywarn}[WARN] Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} not available! Trying to install with nodenv:${_yclear}"
 			echo -ne "${_ydebug}"
 			nodenv install $CXDEV_NODE_VERSION
 			echo -ne "${_yclear}"
 
-			if [ -z $(nodenv version-name) ]; then
+			if ! nodenv shell $CXDEV_NODE_VERSION 2>&1 >> /dev/null ; then
 				echo -e "${_ywarn}[WARN] Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} cannot be installed!${_yclear}"
 				return 2
 			else
 				echo -e "${_yinfo}[INFO] Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} successfully installed with nodenv.${_yclear}"
 			fi
 		fi
-
-		echo -e "${_yinfo}[INFO] Loading Node version ${_ybold}$CXDEV_NODE_VERSION${_yreset} using nodenv.${_yclear}"
-		nodenv shell $CXDEV_NODE_VERSION 2>&1 >> /dev/null
 	elif [ -d "$CXDEV_WORKSPACE_HOME/js-storefront" ]; then
 		echo -e "${_ywarn}[WARN] No node version configured within workspace, missing file: ${_yunderline}.node-version${_yclear}"
 		echo -e "${_ywarn}[WARN] Fallback to node version configured in system environment!${_yclear}"
