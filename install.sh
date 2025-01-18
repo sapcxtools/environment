@@ -205,7 +205,7 @@ _installSDKman () {
 	echo "Executing: curl -s \"https://get.sdkman.io\" | bash"
 	echo ""
 	
-	curl -s "https://get.sdkman.io" | bash | _indentInstallerOutput
+	curl -s "https://get.sdkman.io" | bash > >( _indentInstallerOutput )
 	sdkmanInstallResultCode=$?
 	if [[ "$sdkmanInstallResultCode" == "0" ]]; then
 		echo "" 
@@ -242,7 +242,7 @@ _installNodEnv () {
 	echo "Trying to install nodenv using installer script"
 	echo "Executing: curl -fsSL \"https://github.com/nodenv/nodenv-installer/raw/HEAD/bin/nodenv-installer\" | bash"
 	echo ""
-	curl -fsSL "https://github.com/nodenv/nodenv-installer/raw/HEAD/bin/nodenv-installer" | bash | _indentInstallerOutput
+	curl -fsSL "https://github.com/nodenv/nodenv-installer/raw/HEAD/bin/nodenv-installer" | bash > >( _indentInstallerOutput )
 	nodenvInstallResultCode=$?
 	if [[ "$nodenvInstallResultCode" == "0" ]]; then
 		echo "" 
@@ -273,7 +273,7 @@ _installNodEnv () {
 }
 
 _indentInstallerOutput () {
-	sed 's/^/[INSTALLING] /'
+	sed 's/^/[INSTALLER] /'
 }
 
 _installCXDEVEnvironment

@@ -3,14 +3,8 @@ CXDEV_GLOBAL_DEPENDENCIES="$CXDEVHOME/dependencies"
 CXDEV_GLOBAL_CERTIFICATES="$CXDEVHOME/certificates"
 CXDEV_GLOBAL_CONFIGURATIONS="$CXDEVHOME/configuration"
 
-function yLoadWorkspace {
-	MODE=normal
-	if [[ "true" == "$3" ]]; then
-		MODE=silent
-	fi
-	alias echo='[[ "$MODE" != "silent" ]] && echo'
-
-	[[ "$MODE" != "silent" ]] && echo -e "${_yinfo}[INFO] CXDEV Tools Environment Setup for SAP Commerce Cloud${_yclear}"
+yLoadWorkspace () {
+	echo -e "${_yinfo}[INFO] CXDEV Tools Environment Setup for SAP Commerce Cloud${_yclear}"
 
 	if [[ "" == "$1" ]]; then
 		echo -e "${_yerror}[ERROR] CXDEV Tools cannot apply SAP Commerce workspace settings due to missing ${_ybold}path${_yreset} parameter!${_yclear}"
@@ -154,7 +148,7 @@ function yLoadWorkspace {
 		echo -e "${_yinfo}[INFO] Loading Apache ant settings from platform.${_yclear}"
 		echo -ne "${_ydebug}"
 		cd "$CXDEV_PLATFORM_HOME"
-		source setantenv.sh | _yindent
+		source setantenv.sh 2>&1 > >( _yindent )
 		echo -ne "${_yclear}"
 
 		# Load SAP Commerce configuration
@@ -235,7 +229,7 @@ function yLoadWorkspace {
 	echo -e "${_yinfo}[INFO] CXDEV Tools Environment Setup finished.${_yclear}"
 	echo -n -e "\033]0;${CXDEV_WORKSPACE_NAME}\007"
 
-	yShowWorkspace | _yindent
+	yShowWorkspace > >( _yindent )
 	
 	# Export environment variables
 	export CXDEV_WORKSPACE_HOME
@@ -250,7 +244,7 @@ function yLoadWorkspace {
 	export CXDEV_STOREFRONT_HOME
 }
 
-function yShowWorkspace {
+yShowWorkspace () {
 	echo -e "${_yinfo}"
 	echo -e "${_ybold}Workspace Overview${_yreset}"
 	echo -e "==============================================================================="
@@ -284,7 +278,7 @@ function yShowWorkspace {
 	echo -ne "${_yclear}"
 }
 
-function _yLoadWorkspaceHelp {
+_yLoadWorkspaceHelp () {
 	echo
 	echo -e         "        usage: yLoadWorkspace path [name]"
 	echo 

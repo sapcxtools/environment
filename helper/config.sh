@@ -1,4 +1,4 @@
-function yGlobalConfig {
+yGlobalConfig () {
 	if [[ "" != "$1" && "enable" != "$1" && "disable" != "$1" ]]; then
 		echo -e "${_yerror}[ERROR] Unknown input parameters!${_yclear}"
 		_yGlobalConfigHelp
@@ -94,7 +94,7 @@ function yGlobalConfig {
 	unset ENABLEDPROFILESHOME
 }
 
-function _yGlobalConfigHelp {
+_yGlobalConfigHelp () {
 	echo
 	echo -e         "        usage: yGlobalConfig [action] [config]"
 	echo 

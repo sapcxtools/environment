@@ -12,6 +12,6 @@ _yblink="\e[5m"
 _yreset="\e[21m\e[22m\e[23m\e[24m\e[25m\e[26m\e[27m\e[28m\e[29m"
 
 # Indent functions for log messages
-function _yindent {
+_yindent () {
 	sed 's/^/       /'
 }

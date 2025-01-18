@@ -1,4 +1,4 @@
-function ySyncArtefacts {
+ySyncArtefacts () {
 	if ! command -v jq > /dev/null; then
 		echo -e "${_yerror}[ERROR] In order to parse the manifest, the command line tool jq is required. Please install it and retry!${_yclear}"
 		return 1
@@ -40,7 +40,7 @@ function ySyncArtefacts {
 	fi	
 }
 
-function _ySyncArtefact {
+_ySyncArtefact () {
 	# For ZSH we need to set the bash_rematch option
 	if command -v setopt > /dev/null && [[ ! -o bash_rematch ]]; then
 		setopt local_options bash_rematch
@@ -120,7 +120,7 @@ function _ySyncArtefact {
 	fi
 }
 
-function _ySyncArtefactsHelp {
+_ySyncArtefactsHelp () {
 	echo
 	echo -e         "        usage: ySyncArtefacts path"
 	echo 
