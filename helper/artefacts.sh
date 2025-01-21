@@ -18,7 +18,7 @@ ySyncArtefacts () {
 	fi
 
 	# Cleanup broken links
-	find -L "${CXDEVHOME}/dependencies/sapartefacts" -depth 1 -type l -exec rm -f {} \;
+	find -L "${CXDEVHOME}/dependencies/sapartefacts" -maxdepth 1 -type l -exec rm -f {} \;
 
 	# Sync dependencies
 	if command -v jq > /dev/null; then
