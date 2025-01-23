@@ -102,13 +102,16 @@ _ySyncArtefact () {
 	SOURCE_PATH=$(find "$CXDEVSYNCDIR" -type f -iname "*${VERSION}*${PATCH_LEVEL}*" \( -iname "*${ARTEFACT_NAME}*" -o -iname "*${ARTEFACT_ID1}*" -o -iname "*${ARTEFACT_ID2}*" \))
 	if [ -f "$SOURCE_PATH" ]; then
 		echo -e "${_yinfo}[INFO] Artefact found in sync folder: ${_yunderline}$SOURCE_PATH${_yclear}"
-		echo -e "${_yinfo}[INFO] Copy artefact to local cache: ${_yunderline}$TARGET_PATH${_yclear}"
-		
 		if [[ $(dirname "$TARGET_PATH") =~ "^$CXDEVSYNCDIR/*" ]]; then
+			echo -e "${_yinfo}[INFO] Linking artefact in local cache: ${_yunderline}$TARGET_PATH${_yclear}"
 			ln -s "$SOURCE_PATH" "$TARGET_PATH"
 		elif command -v rsync > /dev/null; then
-			rsync -h --progress "$SOURCE_PATH" "$TARGET_PATH"
+			echo -e "${_yinfo}[INFO] Copy artefact to local cache (using rsync): ${_yunderline}$TARGET_PATH${_yclear}"
+			echo -e "${_yinfo}[INFO] This may take a while, please wait...${_yclear}"
+			rsync -P -h "$SOURCE_PATH" "$TARGET_PATH"
 		else
+			echo -e "${_yinfo}[INFO] Copy artefact to local cache (using cp): ${_yunderline}$TARGET_PATH${_yclear}"
+			echo -e "${_yinfo}[INFO] This may take a while, please wait...${_yclear}"
 			cp "$SOURCE_PATH" "$TARGET_PATH"
 		fi
 	fi
