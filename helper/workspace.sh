@@ -187,26 +187,25 @@ yLoadWorkspace () {
 		# Exchange SAP JCO Library (if necessary)
 		SAPJCO_LIB_PATH=$(realpath "$CXDEV_PLATFORM_HOME/../modules/sap-framework-core/sapcorejco/lib")
 		if [ -d "$SAPJCO_LIB_PATH" ]; then
+			echo -e "${_yinfo}[INFO] SAP JCO Library found at: ${_yunderline}$SAPJCO_LIB_PATH${_yclear}"
 			OS=$(/usr/bin/uname)
 			CPU_ARCHITECTURE=$(/usr/bin/uname -m)
-			echo -e "${_yinfo}[INFO] SAP JCO Library found at: ${_yunderline}$SAPJCO_LIB_PATH${_yclear}"
-			if [[ "$OS" == "Darwin" && "$CPU_ARCHITECTURE" == "arm64" ]]; then
-				echo -e "${_yinfo}[INFO] $OS/$CPU_ARCHITECTURE detected, replacing JCO Library with version from: ${_yunderline}$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current${_yclear}"
-				rm -f "$SAPJCO_LIB_PATH/sapjco3.jar"
-				rm -f "$SAPJCO_LIB_PATH/sapjcomanifest.mf"
-				rm -f "$SAPJCO_LIB_PATH/libsapjco3.dylib"
-				ln -s "$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/sapjco3.jar" "$SAPJCO_LIB_PATH"
-				ln -s "$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/sapjcomanifest.mf" "$SAPJCO_LIB_PATH"
-				ln -s "$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/libsapjco3.dylib" "$SAPJCO_LIB_PATH"
-			fi
-			if [[ "$OS" == "Linux" && "$CPU_ARCHITECTURE" == "arm64" ]]; then
-				echo -e "${_yinfo}[INFO] $OS/$CPU_ARCHITECTURE detected, replacing JCO Library with version from: ${_yunderline}$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current${_yclear}"
-				rm -f "$SAPJCO_LIB_PATH/sapjco3.jar"
-				rm -f "$SAPJCO_LIB_PATH/sapjcomanifest.mf"
-				rm -f "$SAPJCO_LIB_PATH/libsapjco3.so"
-				ln -s "$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/sapjco3.jar" "$SAPJCO_LIB_PATH"
-				ln -s "$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/sapjcomanifest.mf" "$SAPJCO_LIB_PATH"
-				ln -s "$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/libsapjco3.so" "$SAPJCO_LIB_PATH"
+			if [ -d "$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/" ]; then
+				if [[ "$OS" == "Darwin" && "$CPU_ARCHITECTURE" == "arm64" ]]; then
+					echo -e "${_yinfo}[INFO] $OS/$CPU_ARCHITECTURE detected, replacing JCO Library with version from: ${_yunderline}$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current${_yclear}"
+					cp -f "$(find $CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/ -type f -name '*.jar')" "$SAPJCO_LIB_PATH"
+					cp -f "$(find $CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/ -type f -name '*.mf')" "$SAPJCO_LIB_PATH"
+					cp -f "$(find $CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/ -type f -name '*.dylib')" "$SAPJCO_LIB_PATH"
+				fi
+				if [[ "$OS" == "Linux" && "$CPU_ARCHITECTURE" == "arm64" ]]; then
+					echo -e "${_yinfo}[INFO] $OS/$CPU_ARCHITECTURE detected, replacing JCO Library with version from: ${_yunderline}$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current${_yclear}"
+					cp -f "$(find $CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/ -type f -name '*.jar')" "$SAPJCO_LIB_PATH"
+					cp -f "$(find $CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/ -type f -name '*.mf')" "$SAPJCO_LIB_PATH"
+					cp -f "$(find $CXDEV_GLOBAL_DEPENDENCIES/sapjco/current/ -type f -name '*.so')" "$SAPJCO_LIB_PATH"
+				fi
+			elif [[ "$CPU_ARCHITECTURE" == "arm64" ]]; then
+				echo -e "${_yinfo}[INFO] No SAPJCO library found at ${_ybold}$CXDEV_GLOBAL_DEPENDENCIES/sapjco/current${_yreset}.${_yclear}"
+				echo -e "${_ywarn}[WARN] ${_yblink}Consider downloading a SAPJCO library for your system architecture, see README file!${_yclear}"
 			fi
 		fi
 	else

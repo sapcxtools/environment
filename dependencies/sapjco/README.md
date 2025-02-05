@@ -4,8 +4,8 @@ If you are using SAP JCO extensions to call RFC on SAP ERP directly, you will
 need to download the SAP JCO Connector for your system architecture manually
 from the [SAP Support page for SAP JCO Connector](https://support.sap.com/en/product/connectors/jco.html).
 
-Please download the right ZIP archive, extract it to the dependency directory
-and create a symlink called `current` to it.
+Please download a valid ZIP archive for your system architecture, extract it
+to the dependency directory and create a symlink called `current` to it.
 
 For example, if you have downloaded the 64-bit ARM version for Apple macOS and
 extracted it to `/Users/${USER}/.cxdev/dependencies/sapjco/sapjco3-darwinarm64-3.1.11/`
