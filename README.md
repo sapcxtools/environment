@@ -93,6 +93,14 @@ complete list as a reference:
 
 Command for Ubuntu: `sudo apt install curl jq`
 Command for Mac OS: `brew install curl jq`
+
+#### Required (for Mac OS X)
+
+For certain tools the Apple Developer Command Line Tools (xcode) are required.
+You can request the installation by running the following command and follow
+the instructions:
+
+`xcode-select --install`
 </details>
 
 <details>
@@ -197,9 +205,9 @@ Simply open your project by running `yLoadWorkspace path [name]`. You may
 want to define aliases for one or even multiple projects like this:
 
 ```
-alias yproject1='yLoadWorkspace /path/to/customerA/project1 "Customer Projekt1"
-alias yproject2='yLoadWorkspace /path/to/customerB/project2 "Customer Projekt2"
-alias yproject3='yLoadWorkspace /path/to/customerC/project3 "Customer Projekt3"
+alias yproject1='yLoadWorkspace /path/to/customerA/project1 "Customer Projekt1"'
+alias yproject2='yLoadWorkspace /path/to/customerB/project2 "Customer Projekt2"'
+alias yproject3='yLoadWorkspace /path/to/customerC/project3 "Customer Projekt3"'
 ```
 
 Registering these aliases will allow you to simply type `yproject1` instead of
