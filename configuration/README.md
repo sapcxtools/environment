@@ -23,7 +23,7 @@ yGlobalConfig enable <ALIAS>
 For example to activate localdev with SSL and backoffice:
 ```bash
 yGlobalConfig enable localdev
-yGlobalConfig enable SSL
+yGlobalConfig enable ssl
 yGlobalConfig enable backoffice
 ```
 
