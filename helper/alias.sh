@@ -15,10 +15,10 @@ alias yrush='toplatform && cd ../modules/smartedit/smartedittools && ant rushupd
 alias yinit='toplatform && ant initialize -Dtenant=master && toworkspace'
 alias yreinit='toplatform && ant clean customize all initialize -Dtenant=master && toworkspace'
 
-alias ystart='toplatform && ./hybrisserver.sh'
-alias ydebug='toplatform && ./hybrisserver.sh debug'
-alias ystorefront='tostorefront && npm start'
-alias ystorefrontssl='tostorefront && npm local'
+alias ystart='yserver && toplatform && ./hybrisserver.sh'
+alias ydebug='yserver && toplatform && ./hybrisserver.sh debug'
+alias ystorefront='tostorefront && npm run start'
+alias ystorefrontssl='tostorefront && npm run local'
 
 alias ymails='open $CXDEV_PLATFORM_HOME/../../log/mails'
 alias yunittests='toplatform && ant unittests && toworkspace && ytestresult'
