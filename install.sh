@@ -252,13 +252,13 @@ _installNodEnv () {
 		if [ -w $cxdev_zshrc ] && ! grep -q "nodenv init" "$cxdev_zshrc"; then
 			echo "Adding nodenv initialization snippet to: $cxdev_zshrc"
 			echo -e "\n# Initialize NODENV" >> "$cxdev_zshrc"
-			echo "export PATH=\"${ZDOTDIR:-${HOME}}/.nodenv/bin:$PATH\"" >> "$cxdev_zshrc"
+			echo "export PATH=\"${ZDOTDIR:-${HOME}}/.nodenv/bin:\$PATH\"" >> "$cxdev_zshrc"
 			echo 'eval "$(nodenv init - zsh)"' >> "$cxdev_zshrc"
 		fi
 		if [ -w $cxdev_bashrc ] && ! grep -q "nodenv init" "$cxdev_bashrc"; then
 			echo "Adding nodenv initialization snippet to: $cxdev_bashrc"
 			echo -e "\n# Initialize NODENV" >> "$cxdev_bashrc"
-			echo "export PATH=\"${ZDOTDIR:-${HOME}}/.nodenv/bin:$PATH\"" >> "$cxdev_bashrc"
+			echo "export PATH=\"${ZDOTDIR:-${HOME}}/.nodenv/bin:\$PATH\"" >> "$cxdev_bashrc"
 			echo 'eval "$(nodenv init - bash)"' >> "$cxdev_bashrc"
 		fi
 
