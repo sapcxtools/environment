@@ -99,7 +99,7 @@ _ySyncArtefact () {
 		return 1
 	fi
 	
-	SOURCE_PATH=$(find "$CXDEVSYNCDIR" -type f -iname "*${VERSION}*${PATCH_LEVEL}*" \( -iname "*${ARTEFACT_NAME}*" -o -iname "*${ARTEFACT_ID1}*" -o -iname "*${ARTEFACT_ID2}*" \))
+	SOURCE_PATH=$(find "$CXDEVSYNCDIR" -type f \( -iname "${ARTEFACT_NAME}-${VERSION}.${PATCH_LEVEL}.zip" -o -iname "${ARTEFACT_ID1}${VERSION}*${PATCH_LEVEL}-*.zip" -o -iname "${ARTEFACT_ID2}${VERSION}*${PATCH_LEVEL}-*.zip" \))
 	if [ -f "$SOURCE_PATH" ]; then
 		echo -e "${_yinfo}[INFO] Artefact found in sync folder: ${_yunderline}$SOURCE_PATH${_yclear}"
 		if [[ $(dirname "$TARGET_PATH") =~ "^$CXDEVSYNCDIR/*" ]]; then
