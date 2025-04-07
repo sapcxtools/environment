@@ -1,7 +1,7 @@
 # CX DEV Environment Alias
 alias toworkspace='cd "$CXDEV_WORKSPACE_HOME"'
 alias toplatform='cd "$CXDEV_PLATFORM_HOME"'
-alias toconfig='cd "$CXDEV__OPT_CONFIG_DIR"'
+alias toconfig='cd "$CXDEV_OPT_CONFIG_DIR"'
 alias tostorefront='cd "$CXDEV_STOREFRONT_HOME"'
 
 alias yreload='yLoadWorkspace "$CXDEV_WORKSPACE_HOME" "$CXDEV_WORKSPACE_NAME"'
