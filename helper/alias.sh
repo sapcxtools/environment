@@ -5,7 +5,7 @@ alias toconfig='cd "$CXDEV_OPT_CONFIG_DIR"'
 alias tostorefront='cd "$CXDEV_STOREFRONT_HOME"'
 
 alias yreload='yLoadWorkspace "$CXDEV_WORKSPACE_HOME" "$CXDEV_WORKSPACE_NAME"'
-alias ysetup='toworkspace && ./gradlew setupLocalDevelopment && yreload'
+alias ysetup='yreloaod && ./gradlew setupLocalDevelopment && yreload'
 alias yreformat='toworkspace && ./gradlew spotlessApply'
 
 alias yserver='toplatform && ant customize server && toworkspace'
