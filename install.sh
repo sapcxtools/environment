@@ -19,8 +19,8 @@ cxdev_zshrc="${ZDOTDIR:-${HOME}}/.zshrc"
 
 # Global variables
 export CXDEV_DOWNLOAD_URL="https://github.com/sapcxtools/environment/archive/refs/tags/"
-export CXDEV_VERSION="1.0.2"
-export CXDEV_HASH="7b56e82de1dcd9dfd88c63159c2f851f"
+export CXDEV_VERSION="1.1.0"
+export CXDEV_HASH="7dbd89e0f4f4abdc0a1e1739b1f9fb0f"
 export CXDEV_INSTALL_DIR="$HOME/.cxdev"
 
 _installCXDEVEnvironment () {
