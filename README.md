@@ -175,7 +175,7 @@ Until then, we recommend to use the adjusted template from our repository:
 The installation of CXDEV is also very simple by running the following prompt:
 
 ```
-curl -s "https://raw.githubusercontent.com/sapcxtools/environment/refs/heads/develop/install.sh" | bash
+bash <(curl -fsSL https://raw.githubusercontent.com/sapcxtools/environment/refs/heads/develop/install.sh)
 ```
 
 Everything else will be done by the installer.
