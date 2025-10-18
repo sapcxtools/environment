@@ -1,4 +1,9 @@
 # CX DEV Environment Alias
+alias yLW='yLoadWorkspace'
+alias yGC='yGlobalConfig'
+alias yloadworkspace='yLoadWorkspace'
+alias yglobalconfig='yGlobalConfig'
+
 alias toworkspace='cd "$CXDEV_WORKSPACE_HOME"'
 alias toplatform='cd "$CXDEV_PLATFORM_HOME"'
 alias toconfig='cd "$CXDEV_OPT_CONFIG_DIR"'
