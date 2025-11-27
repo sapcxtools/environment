@@ -163,6 +163,11 @@ _installCXDEVEnvironment () {
 	echo "Copy files to installation location."
 	cp -r "$CXDEV_INSTALL_DIR/tmp/environment-$CXDEV_VERSION/." "$CXDEV_INSTALL_DIR"
 
+	# recreate private key
+	rm -f "$CXDEV_INSTALL_DIR/certificates/local.cxdev.me.key"
+	openssl pkcs12 -in "$CXDEV_INSTALL_DIR/certificates/local.cxdev.me.p12" -passin pass:123456 -nodes -nocerts -out "$CXDEV_INSTALL_DIR/tmp/local.cxdev.me.key"
+	tail -n +5 "$CXDEV_INSTALL_DIR/tmp/local.cxdev.me.key" > $CXDEV_INSTALL_DIR/certificates/local.cxdev.me.key
+	
 	# store version
 	echo "$CXDEV_VERSION" > "$CXDEV_INSTALL_DIR/.version"
 
