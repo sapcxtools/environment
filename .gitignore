@@ -27,3 +27,7 @@ dependencies/sapjco/current/*
 
 # Configuration Profiles
 configuration/enabled/*
+
+# Avoid checkin of private key
+certificates/local.cxdev.me.key
+
