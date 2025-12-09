@@ -68,19 +68,28 @@ _ySyncArtefact () {
 	esac
 
 	# Parse and split artefact version
-	versionRegEx="([0-9]{4})\\.([0-9]{1,3})"
+	versionRegEx="([0-9]{4})(\\-jdk[a-z0-9]+)?\\.([0-9]{1,3})"
 	VERSION=
+	APPENDIX=
 	PATCH_LEVEL=
 	if [[ "$2" =~ $versionRegEx ]]; then
 		VERSION=${BASH_REMATCH[@]:1:1}
-		PATCH_LEVEL=${BASH_REMATCH[@]:2:1}
+		APPENDIX=${BASH_REMATCH[@]:2:1}
+		PATCH_LEVEL=${BASH_REMATCH[@]:3:1}
+
+		# Handle 2211-JDK21 with special naming conventions (2211-jdk21.x)
+		if [[ "$VERSION" == "2211" ]] && [[ "$APPENDIX" == "-jdk21" ]]; then
+			ARTEFACT_ID1="CCL"
+			ARTEFACT_ID2="CCL"
+		fi
 	else
-		echo -e "${_yerror}[ERROR] Artefact version does not match pattern XXXX.YYY! Given:${_ybold}$2${_yclear}"
+		echo -e "${_yerror}[ERROR] Artefact version does not match pattern XXXX.YYY or XXXX-*.YYY! Given:${_ybold}$2${_yclear}"
 		return 1
 	fi
 
+
 	# First check if the file is already available
-	TARGET_PATH="${CXDEVHOME}/dependencies/sapartefacts/${ARTEFACT_NAME}-${VERSION}.${PATCH_LEVEL}.zip"
+	TARGET_PATH="${CXDEVHOME}/dependencies/sapartefacts/${ARTEFACT_NAME}-${VERSION}${APPENDIX}.${PATCH_LEVEL}.zip"
 	if [ -f "$TARGET_PATH" ]; then
 		echo -e "${_yinfo}[INFO] Artefact found in local cache: ${_yunderline}$TARGET_PATH${_yclear}"
 		return 0
@@ -99,7 +108,7 @@ _ySyncArtefact () {
 		return 1
 	fi
 	
-	SOURCE_PATH=$(find "$CXDEVSYNCDIR" -type f \( -iname "${ARTEFACT_NAME}-${VERSION}.${PATCH_LEVEL}.zip" -o -iname "${ARTEFACT_ID1}${VERSION}*${PATCH_LEVEL}-*.zip" -o -iname "${ARTEFACT_ID2}${VERSION}*${PATCH_LEVEL}-*.zip" \))
+	SOURCE_PATH=$(find "$CXDEVSYNCDIR" -type f \( -iname "${ARTEFACT_NAME}-${VERSION}${APPENDIX}.${PATCH_LEVEL}.zip" -o -iname "${ARTEFACT_ID1}${VERSION}*${PATCH_LEVEL}-*.zip" -o -iname "${ARTEFACT_ID2}${VERSION}*${PATCH_LEVEL}-*.zip" \))
 	if [ -f "$SOURCE_PATH" ]; then
 		echo -e "${_yinfo}[INFO] Artefact found in sync folder: ${_yunderline}$SOURCE_PATH${_yclear}"
 		if [[ $(dirname "$TARGET_PATH") =~ "^$CXDEVSYNCDIR/*" ]]; then
