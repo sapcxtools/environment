@@ -145,11 +145,16 @@ yLoadWorkspace () {
 		echo -e "${_yinfo}[INFO] SAP Commerce installation found at: ${_yunderline}$CXDEV_PLATFORM_HOME${_yclear}"
 
 		# Load Ant environment
-		echo -e "${_yinfo}[INFO] Loading Apache ant settings from platform.${_yclear}"
-		echo -ne "${_ydebug}"
-		cd "$CXDEV_PLATFORM_HOME"
-		source setantenv.sh 2>&1 > >( _yindent )
-		echo -ne "${_yclear}"
+		if [ -f "$CXDEV_PLATFORM_HOME/setantenv.sh" ]; then
+			echo -e "${_yinfo}[INFO] Loading Apache ant settings from platform.${_yclear}"
+			echo -ne "${_ydebug}"
+			cd "$CXDEV_PLATFORM_HOME"
+			chmod +x setantenv.sh
+			source setantenv.sh 2>&1 > >( _yindent )
+			echo -ne "${_yclear}"
+		else
+			echo -e "${_ywarn}[WARN] ${_yblink}No Apache ant settings found, platform not installed correctly. Consider to re-run ysetup.${_yclear}"
+		fi
 
 		# Load SAP Commerce configuration
 		echo -e "${_yinfo}[INFO] Environment configuration found at: ${_yunderline}$CXDEV_PLATFORM_HOME/env.properties${_yclear}"
