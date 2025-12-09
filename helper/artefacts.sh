@@ -50,16 +50,19 @@ _ySyncArtefact () {
 	ARTEFACT_NAME=
 	ARTEFACT_ID1=
 	ARTEFACT_ID2=
+	ARTEFACT_ID3=
 	case "$1" in
 		"hybris-commerce-suite")
 			ARTEFACT_NAME="$1"
 			ARTEFACT_ID1="CXCOMCL"
 			ARTEFACT_ID2="CXCOMM"
+			ARTEFACT_ID3="CCL"
 			;;
 		"hybris-commerce-integrations")
 			ARTEFACT_NAME="$1"
 			ARTEFACT_ID1="CXCOMIEP"
 			ARTEFACT_ID2="CXCOMINT"
+			ARTEFACT_ID3="CIEP"
 			;;
 		*)
 			echo -e "${_yerror}[ERROR] No artefact found for identifier: ${_ybold}$1${_yclear}"
@@ -72,21 +75,24 @@ _ySyncArtefact () {
 	VERSION=
 	APPENDIX=
 	PATCH_LEVEL=
+	ARTEFACTVERSION=
 	if [[ "$2" =~ $versionRegEx ]]; then
 		VERSION=${BASH_REMATCH[@]:1:1}
 		APPENDIX=${BASH_REMATCH[@]:2:1}
 		PATCH_LEVEL=${BASH_REMATCH[@]:3:1}
 
-		# Handle 2211-JDK21 with special naming conventions (2211-jdk21.x)
-		if [[ "$VERSION" == "2211" ]] && [[ "$APPENDIX" == "-jdk21" ]]; then
-			ARTEFACT_ID1="CCL"
-			ARTEFACT_ID2="CCL"
-		fi
+		case "$APPENDIX" in
+			"-jdk21")
+				ARTEFACTVERSION="${VERSION}J21"
+				;;
+			*)
+				ARTEFACTVERSION="${VERSION}"
+				;;
+		esac
 	else
 		echo -e "${_yerror}[ERROR] Artefact version does not match pattern XXXX.YYY or XXXX-*.YYY! Given:${_ybold}$2${_yclear}"
 		return 1
 	fi
-
 
 	# First check if the file is already available
 	TARGET_PATH="${CXDEVHOME}/dependencies/sapartefacts/${ARTEFACT_NAME}-${VERSION}${APPENDIX}.${PATCH_LEVEL}.zip"
@@ -108,7 +114,7 @@ _ySyncArtefact () {
 		return 1
 	fi
 	
-	SOURCE_PATH=$(find "$CXDEVSYNCDIR" -type f \( -iname "${ARTEFACT_NAME}-${VERSION}${APPENDIX}.${PATCH_LEVEL}.zip" -o -iname "${ARTEFACT_ID1}${VERSION}*${PATCH_LEVEL}-*.zip" -o -iname "${ARTEFACT_ID2}${VERSION}*${PATCH_LEVEL}-*.zip" \))
+	SOURCE_PATH=$(find "$CXDEVSYNCDIR" -type f \( -iname "${ARTEFACT_NAME}-${VERSION}${APPENDIX}.${PATCH_LEVEL}.zip" -o -iname "${ARTEFACT_ID1}${ARTEFACTVERSION}*${PATCH_LEVEL}-*.zip" -o -iname "${ARTEFACT_ID2}${ARTEFACTVERSION}*${PATCH_LEVEL}-*.zip" -o -iname "${ARTEFACT_ID3}${ARTEFACTVERSION}*${PATCH_LEVEL}-*.zip" \))
 	if [ -f "$SOURCE_PATH" ]; then
 		echo -e "${_yinfo}[INFO] Artefact found in sync folder: ${_yunderline}$SOURCE_PATH${_yclear}"
 		if [[ $(dirname "$TARGET_PATH") =~ "^$CXDEVSYNCDIR/*" ]]; then
