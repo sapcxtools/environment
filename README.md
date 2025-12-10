@@ -75,10 +75,12 @@ complete list as a reference:
 
 #### Elementary (typically shipped with the linux distribution)
 
+- `awk`
 - `basename`
 - `find`
 - `grep`
 - `ln`
+- `md5sum`
 - `readlink`
 - `realpath`
 - `sed`
@@ -90,9 +92,10 @@ complete list as a reference:
 
 - `curl` (see https://curl.se/)
 - `jq` (see https://jqlang.github.io/jq/)
+- `openssl` (see https://www.openssl.org/)
 
-Command for Ubuntu: `sudo apt install curl jq`
-Command for Mac OS: `brew install curl jq`
+Command for Ubuntu: `sudo apt install curl jq openssl`
+Command for Mac OS: `brew install curl jq openssl`
 
 #### Required (for Mac OS X)
 

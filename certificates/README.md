@@ -17,6 +17,8 @@ A challenge password []:
 An optional company name []:
 ```
 
+Attention: The private keyfile must not be committed and stored within the repository directly!
+
 The CSR then needs to be send to the certification authority. In return you will receive a certificate file which then should be stored as file `local.cxdev.me.crt`.
 
 For running the local servers, both the certificate and the private key are necessary. For tomcat server the both files need to be packed into an p12 key store format by running the following command:

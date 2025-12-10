@@ -66,18 +66,11 @@ _installCXDEVEnvironment () {
 	echo "Checking the following dependencies for CXDEV environment:"
 	declare -i unresolved_dependencies=0
 
-	if type md5sum 2>&1 > /dev/null ; then
-		echo "- md5sum found!"
+	if type awk 2>&1 > /dev/null ; then
+		echo "- awk found!"
 	else
 		unresolved_dependencies+=1
-		echo "- md5sum not found!"
-	fi
-
-	if type unzip 2>&1 > /dev/null ; then
-		echo "- unzip found!"
-	else
-		unresolved_dependencies+=1
-		echo "- unzip not found!"
+		echo "- awk not found!"
 	fi
 
 	if type curl 2>&1 > /dev/null ; then
@@ -87,11 +80,32 @@ _installCXDEVEnvironment () {
 		echo "- curl not found!"
 	fi
 
+	if type md5sum 2>&1 > /dev/null ; then
+		echo "- md5sum found!"
+	else
+		unresolved_dependencies+=1
+		echo "- md5sum not found!"
+	fi
+
+	if type openssl 2>&1 > /dev/null ; then
+		echo "- openssl found!"
+	else
+		unresolved_dependencies+=1
+		echo "- openssl not found!"
+	fi
+
 	if type sed 2>&1 > /dev/null ; then
 		echo "- sed found!"
 	else
 		unresolved_dependencies+=1
 		echo "- sed not found!"
+	fi
+
+	if type unzip 2>&1 > /dev/null ; then
+		echo "- unzip found!"
+	else
+		unresolved_dependencies+=1
+		echo "- unzip not found!"
 	fi
 
 	if [ ! -z "$SDKMAN_DIR" ] ; then
@@ -126,6 +140,8 @@ _installCXDEVEnvironment () {
 	if [ "$unresolved_dependencies" != "0" ]; then
 		echo "$unresolved_dependencies unresolved dependencies."
 		echo "Please install all dependencies on your system using your favourite package manager and then restart the installer."
+		echo "- Linux example: sudo apt install curl jq openssl"
+		echo "- MacOS example: brew install curl jq openssl"
 		exit
 	fi
 
@@ -165,7 +181,8 @@ _installCXDEVEnvironment () {
 
 	# recreate private key
 	rm -f "$CXDEV_INSTALL_DIR/certificates/local.cxdev.me.key"
-	openssl pkcs12 -in "$CXDEV_INSTALL_DIR/certificates/local.cxdev.me.p12" -passin pass:123456 -nodes -nocerts -out "$CXDEV_INSTALL_DIR/tmp/local.cxdev.me.key"
+	KEYPASS=$(grep "^tomcat\\.ssl\\.keystore\\.password=" "${CXDEV_INSTALL_DIR}/configuration/profiles/81-ssl.properties" | awk '{split($0, a, "="); print a[2]}')
+	openssl pkcs12 -in "$CXDEV_INSTALL_DIR/certificates/local.cxdev.me.p12" -passin pass:$KEYPASS -nodes -nocerts -out "$CXDEV_INSTALL_DIR/tmp/local.cxdev.me.key"
 	tail -n +5 "$CXDEV_INSTALL_DIR/tmp/local.cxdev.me.key" > $CXDEV_INSTALL_DIR/certificates/local.cxdev.me.key
 	
 	# store version
