@@ -1,13 +1,13 @@
 yGlobalConfig () {
 	local ACTION=$1
-	if [[ "$ACTION" != "enable" && "$ACTION" != "disable" ]]; then
+	if [[ "$ACTION" != "enable" && "$ACTION" != "disable" && "$ACTION" != "list" ]]; then
 		echo -e "${_yerror}[ERROR] Action must be enable or disable.${_yclear}"
 		_yGlobalConfigHelp
 		return 1
 	fi
 
 	shift
-	if [[ "$#" -eq 0 ]]; then
+	if [[ "$ACTION" == "list" ]] || [[ "$#" -eq 0 ]]; then
 		_yGlobalConfigList
 		return 0
 	fi
@@ -77,11 +77,12 @@ _yResolveProfile () {
 
 _yGlobalConfigHelp () {
 	echo
-	echo -e         "        usage: yGlobalConfig [action] [config] ([config]...)"
+	echo -e         "        usage: yGlobalConfig [action] ([config] [config]...)"
 	echo 
 	echo -e         "${_ybold}OPTION SUMMARY${_yreset}"
 	echo 
 	echo -e         "        action          action can be either of the following"
+	echo -e         "                        ${_ybold}list${_yreset} - lists configuration profile overview"
 	echo -e         "                        ${_ybold}enable${_yreset} - enables the given configuration profile"
 	echo -e         "                        ${_ybold}disable${_yreset} - disables the given configuration profile"
 	echo -e         "        config          config can be either"
