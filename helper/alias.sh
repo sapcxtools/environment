@@ -5,6 +5,7 @@ alias yGC='yGlobalConfig'
 alias ygc='yGlobalConfig'
 alias yloadworkspace='yLoadWorkspace'
 alias yglobalconfig='yGlobalConfig'
+alias yextendlicense='yExtendLicense'
 
 alias toworkspace='cd "$CXDEV_WORKSPACE_HOME"'
 alias toplatform='cd "$CXDEV_PLATFORM_HOME"'

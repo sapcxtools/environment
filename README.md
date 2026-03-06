@@ -28,6 +28,7 @@ with SAP Commerce Cloud tremendously.
 | Building the project | `yserver` <br> `ybuild` <br> `yrebuild`<br> `yinit` <br> `yreinit` <br> `yreformat` | Performs the given build operation while the mapping is as follows: <br> <ul><li>`yserver` => `ant customize server`</li><li>`ybuild` => `ant build server`</li><li>`yrebuild` => `ant clean customize all`</li><li>`yrush` => `ant rushrebuilddev`</li><li>`yinit` => `ant initialize`</li><li>`yreinit` => `ant clean customize all initialize`</li></ul> <br> `yreformat` performs automated code conventions, if available. |
 | Server start | `ystart` <br> `ydebug` <br> `ystorefront` <br> `ystorefrontssl` | Starting the local server without or with DEBUG mode enabled. The frontend can be started without or with SSL support. |
 | Testing | `yunittest` <br> `yinttest` <br> `ytestresult` <br> `ymails` | Perform testing scenarios and open the test results in your system's browser or the folder with stored local email in your system's file browser. |
+| Housekeeping | `yExtendLicense` | Perform house keeping tasks, like extending the valid days of your local instance. |
 
 # How to use
 

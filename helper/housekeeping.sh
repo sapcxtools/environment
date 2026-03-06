@@ -1,3 +1,19 @@
+yExtendLicense() {
+    if [[ ! -d "$CXDEVHOME" ]]; then
+        echo -e "${_yerror}[ERROR] CXDEV home must be set before calling yExtendLicense.${_yclear}"
+        return 1
+    fi
+    if [[ ! -d "$CXDEV_PLATFORM_HOME" ]]; then
+        echo -e "${_yerror}[ERROR] Platform home must be set before calling yExtendLicense.${_yclear}"
+        return 1
+    fi
+
+    let CURRENT_DIR=`pwd`
+    cd "$CXDEV_PLATFORM_HOME"
+    ant executesql -Dsql.file="$CXDEVHOME/sql/extendlicense.sql"
+    cd "$CURRENT_DIR"
+}
+
 yCompareLoadedExtensions() {
   if [ "$#" -ne 2 ]; then
     echo -e "\033[1;31mUsage:\033[0m yCompareExtensions <logBefore> <logAfter>"
