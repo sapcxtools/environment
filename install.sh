@@ -51,7 +51,7 @@ _installCXDEVEnvironment () {
 			echo "This version is already installed."
 			exit 0
 		else
-			read -r -p "Do you want us to update your CXDEV environment with version ${CXDEV_VERSION}? [y/N] " runUpdate </dev/tty
+			runUpdate=$(_readYesNo "Do you want us to update your CXDEV environment with version ${CXDEV_VERSION}? [y/N] " "N")
 			if [[ "Y" != "$runUpdate" && "y" != "$runUpdate" ]]; then
 				echo "Installer aborted."
 				exit 1
@@ -111,7 +111,7 @@ _installCXDEVEnvironment () {
 		echo "- SDKman found!"
 	else
 		echo "- SDKman not found!"
-		read -r -p "  Do you want us to install SDKman for you? [Y/n] " installSDKman </dev/tty
+		installSDKman=$(_readYesNo "  Do you want us to install SDKman for you? [Y/n] " "Y")
 		if [[ "n" == "$installSDKman" || "N" == "$installSDKman" ]]; then
 			echo "  SDKman installation skipped!"
 			unresolved_dependencies+=1
@@ -124,8 +124,7 @@ _installCXDEVEnvironment () {
 		echo "- nodenv found!"
 	else
 		echo "- nodenv not found!"
-
-		read -r -p "  Do you want us to install nodenv for you? [Y/n] " installNodenv </dev/tty
+		installNodenv=$(_readYesNo "  Do you want us to install nodenv for you? [Y/n] " "Y")
 		if [[ "n" == "$installNodenv" || "N" == "$installNodenv" ]]; then
 			echo "  nodenv installation skipped!"
 			unresolved_dependencies+=1
@@ -216,6 +215,24 @@ END
 	echo ""
 	echo "Thank you for using CXDEV environment :)"
 	echo ""
+}
+
+_readYesNo () {
+	local prompt="$1"
+	local default="$2"
+	local answer
+
+	if [[ -n "$NONINTERACTIVE" ]]; then
+		answer="Y"
+	else
+		read -r -p "$prompt" answer </dev/tty
+	fi
+
+	if [[ -z "$answer" ]]; then
+		answer="$default"
+	fi
+
+	echo "$answer"
 }
 
 _installSDKman () {
