@@ -53,8 +53,8 @@ _installCXDEVEnvironment () {
 		else
 			runUpdate=$(_readYesNo "Do you want us to update your CXDEV environment with version ${CXDEV_VERSION}? [y/N] " "N")
 			if [[ "Y" != "$runUpdate" && "y" != "$runUpdate" ]]; then
-				echo "Installer aborted."
-				exit 1
+				echo "Installer aborted, CXDEV environment was not updated."
+				exit 0
 			else
 				find ${CXDEV_INSTALL_DIR} -type f -not \( -name "dependencies" -prune \) -exec rm -rf {} \;
 			fi
