@@ -21,7 +21,7 @@ cxdev_zshrc="${ZDOTDIR:-${HOME}}/.zshrc"
 export CXDEV_DOWNLOAD_URL="https://github.com/sapcxtools/environment/archive/refs/tags/"
 export CXDEV_VERSION="1.3.3"
 export CXDEV_HASH="f06252e6c3b87abe7b6a447d8e1b2244"
-export CXDEV_INSTALL_DIR="$HOME/.cxdev"
+export CXDEV_INSTALL_DIR="${CXDEV_INSTALL_DIR:-$HOME/.cxdev}"
 
 _installCXDEVEnvironment () {
 	echo "  ___  _  _  ____  ____  _  _ "
