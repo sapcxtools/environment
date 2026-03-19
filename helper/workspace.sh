@@ -126,6 +126,16 @@ yLoadWorkspace () {
 		echo -e "${_ywarn}[WARN] ${_yblink}Please verify that the node version is the correct for your project!${_yclear}"
 	fi
 
+	# Load gradle environment
+	CXDEV_GRADLE_VERSION=
+	if [ -f "$CXDEV_WORKSPACE_HOME/gradlew" ]; then
+		CXDEV_GRADLE_VERSION=$("$CXDEV_WORKSPACE_HOME/gradlew" --version | grep "^Gradle " | awk '{print $2}')
+		echo -e "${_yinfo}[INFO] Gradle wrapper found, gradle version: ${CXDEV_GRADLE_VERSION}!${_yclear}"
+	else
+		echo -e "${_yinfo}[WARN] No gradle wrapper found!${_yclear}"
+		echo -e "${_ywarn}[WARN] ${_yblink}Please configure a gradle wrapper for your project!${_yclear}"
+	fi
+
 	# Detect platform structure (supported are classic, embedded or CCv2)
 	CXDEV_PLATFORM_HOME=$CXDEV_WORKSPACE_HOME/server/hybris/bin/platform
 	CXDEV_PLATFORM_HOME_ALTERNATIVE=$CXDEV_WORKSPACE_HOME/hybris/bin/platform
@@ -252,6 +262,7 @@ yLoadWorkspace () {
 	export CXDEV_CXDEV_CONFIG_DIR
 	export CXDEV_OPT_CONFIG_DIR
 	export CXDEV_STOREFRONT_HOME
+	export CXDEV_GRADLE_VERSION
 }
 
 yShowWorkspace () {
@@ -280,10 +291,11 @@ yShowWorkspace () {
 			echo -e "==============================================================================="
 		fi
 	fi
-	echo -e "${_ybold}Java version (detected)${_yreset}  ${_yitalic}$CXDEV_JAVA_VERSION${_yreset}"
-	echo -e "${_ybold}Java version file${_yreset}        ${_yitalic}$CXDEV_JAVA_VERSION_FILE${_yreset}"
-	echo -e "${_ybold}Node version (detected)${_yreset}  ${_yitalic}$CXDEV_NODE_VERSION${_yreset}"
-	echo -e "${_ybold}Node version file${_yreset}        ${_yitalic}$CXDEV_NODE_VERSION_FILE${_yreset}"
+	echo -e "${_ybold}Java version (detected)${_yreset}   ${_yitalic}$CXDEV_JAVA_VERSION${_yreset}"
+	echo -e "${_ybold}Java version file${_yreset}         ${_yitalic}$CXDEV_JAVA_VERSION_FILE${_yreset}"
+	echo -e "${_ybold}Node version (detected)${_yreset}   ${_yitalic}$CXDEV_NODE_VERSION${_yreset}"
+	echo -e "${_ybold}Node version file${_yreset}         ${_yitalic}$CXDEV_NODE_VERSION_FILE${_yreset}"
+	echo -e "${_ybold}Gradle version (detected)${_yreset} ${_yitalic}$CXDEV_GRADLE_VERSION${_yreset}"
 	echo -e "==============================================================================="
 	echo -e "${_yclear}"
 }
