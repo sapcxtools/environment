@@ -23,6 +23,7 @@ with SAP Commerce Cloud tremendously.
 | Task | Console command(s) | Description |
 |------|--------------------|-------------|
 | Load Project | `yLoadWorkspace path [NAME]` | Load and configures the SAP Commerce project at `path`. The `name` is optional and just for your convenience (used in title of terminal). <br> **Note: This command is a prerequisite for all the commands below!** |
+| Workspace | `yinfo` | Shows the information of the currently loaded workspace. |
 | Setup Project | `ysetup` | Performs the fundamental setup of the local development environment, including the extraction of the SAP Commerce Suite and integration packs which are configured within the `manifest.json`. <br> **Note: This command is typically used once in a while when you need to update your platform. It automates the whole setup process.** |
 | Project navigation | `toworkspace` <br> `toplatform` <br> `toconfig` <br> `tostorefront` | Navigates to the specific folder within your local project. These commands use absolute paths, so you can call them from anywhere in the system. |
 | Building the project | `yserver` <br> `ybuild` <br> `yrebuild`<br> `yinit` <br> `yreinit` <br> `yreformat` | Performs the given build operation while the mapping is as follows: <br> <ul><li>`yserver` => `ant customize server`</li><li>`ybuild` => `ant build server`</li><li>`yrebuild` => `ant clean customize all`</li><li>`yinit` => `ant initialize`</li><li>`yreinit` => `ant clean customize all initialize`</li></ul> <br> `yreformat` performs automated code conventions, if available. |
@@ -171,7 +172,7 @@ project scenarios:
 
 We are looking forward to merge back the changes to the global repository.
 Until then, we recommend to use the adjusted template from our repository:
-[Adjusted CCv2 template](https://github.com/sapcxtools/ccv2-project-template).
+[Adjusted CCv2 template](https://github.com/cxdevtools/ccv2-project-template).
 </details>
 
 ## Installation<a name="installation"></a>
@@ -179,7 +180,7 @@ Until then, we recommend to use the adjusted template from our repository:
 The installation of CXDEV is also very simple by running the following prompt:
 
 ```
-bash <(curl -fsSL https://raw.githubusercontent.com/sapcxtools/environment/refs/heads/develop/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/cxdevtools/environment/refs/heads/develop/install.sh)
 ```
 
 Everything else will be done by the installer.
@@ -189,6 +190,12 @@ Everything else will be done by the installer.
 In order to use of the CXDEV environment, please make sure that you have
 downloaded the installation artefacts from SAP that are references within your
 `manifest.json` file.
+
+Hint:
+If you are running the CXDEV environment on a CI/CD pipeline, you can set the
+environment variable `CXDEVCIMODE=y` to your `.bashrc` or `.zshrc` file to 
+remove the ANSI color markers from the logging messages. This helps to keep the
+CI/CD logs clean. The variable needs to be set before sourcing the `cxdev.sh`.
 
 We encourage you to configure the CXDEVSYNCDIR environment variable to point
 to a shared directory, eg. a company wide shared GDrive or OneDrive folder or
@@ -224,3 +231,8 @@ helps to have a better overview over multiple projects in separate windows.
 The preconfigured configuration profiles and the explaination of the mechanism
 is part of the [configuration README.md](./configuration/README.md). Please go
 there for further details about configuration options.
+
+# Update
+
+The environment improves continuously and can be updated easily by using the 
+`yupdateenvironment` shortcut or by reexecuting the [installation command](#installation).
