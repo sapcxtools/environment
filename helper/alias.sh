@@ -28,7 +28,7 @@ alias yreinit='toplatform && ant clean customize all initialize -Dtenant=master 
 alias ystart='yserver && toplatform && ./hybrisserver.sh'
 alias ydebug='yserver && toplatform && ./hybrisserver.sh debug'
 alias ystorefront='tostorefront && npm run start'
-alias ystorefrontssl='tostorefront && npm run local'
+alias ystorefrontssl='tostorefront && npm run cxdev'
 
 alias ymails='open $CXDEV_PLATFORM_HOME/../../log/mails'
 alias yunittests='toplatform && ant unittests && toworkspace && ytestresult'

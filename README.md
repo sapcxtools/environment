@@ -169,6 +169,9 @@ project scenarios:
   the root level
 - Moved dependencies folder to the top level and use it as a link to a shared
   global directory
+- Enhancements for package.json to start local storefront with certificates 
+  from ../certificates by using `npm run cxdev`. The command is as follows:
+  `"cxdev": "ng serve --watch --configuration development --host 0.0.0.0 --ssl true --ssl-key ../../certificates/local.cxdev.me.key --ssl-cert ../../certificates/local.cxdev.me.crt"`
 
 We are looking forward to merge back the changes to the global repository.
 Until then, we recommend to use the adjusted template from our repository:
